@@ -4,6 +4,9 @@
 #include "Windows.Xbox.Input.Gamepad.h"
 #include "Windows.Xbox.Input.Gamepad.g.cpp"
 #include <winrt/Windows.Foundation.Collections.h>
+#include <winrt/Windows.Foundation.h>
+#include <winrt/Windows.UI.Input.h>
+#include <windowsx.h>
 #include <Xinput.h>
 #include "Windows.Xbox.System.User.h"
 
@@ -32,6 +35,8 @@ namespace winrt::Windows::Xbox::Input::implementation
             IGamepad dummyGamepad = winrt::make<Gamepad>(0);
             staticGamepads.Append(dummyGamepad);
         }
+
+        ShowCursor(FALSE);
 
         return staticGamepads.GetView( );
     }
@@ -125,7 +130,7 @@ namespace winrt::Windows::Xbox::Input::implementation
     {
         XINPUT_STATE xiState;
         ZeroMemory(&xiState, sizeof(XINPUT_STATE));
-        RawGamepadReading reading = {};
+        reading = {};
 
         DWORD result = XInputGetState(m_id, &xiState);
         if (result == ERROR_SUCCESS)
@@ -191,34 +196,33 @@ namespace winrt::Windows::Xbox::Input::implementation
         if (lx != 0.0f || ly != 0.0f) {
             reading.LeftThumbstickX = lx;
             reading.LeftThumbstickY = ly;
+        }        
+
+        if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
+            reading.RightTrigger = 1.0f;
+        }
+        if (GetAsyncKeyState(VK_RBUTTON) & 0x8000) {
+            reading.LeftTrigger = 1.0f;
         }
 
-        winrt::Windows::UI::Core::CoreWindow window = winrt::Windows::UI::Core::CoreWindow::GetForCurrentThread();
-
         /*
-        * Mouse Support
+        * Mouse Input
         */
-        window.PointerMoved([](auto&&, winrt::Windows::UI::Core::PointerEventArgs const& args)
-        {
-            auto pos = args.CurrentPoint().Position();
-            float MouseX = pos.X - lastX;
-            float MouseY = pos.Y - lastY;
+        POINT pos;
+        int screenW = GetSystemMetrics(SM_CXSCREEN);
+        int screenH = GetSystemMetrics(SM_CYSCREEN);
+        int centerX = screenW / 2;
+        int centerY = screenH / 2;
 
-            if (MouseX != 0.0f || MouseY != 0.0f) {
-                reading.RightThumbstickX = std::clamp(MouseX / 50.0f, -1.0f, 1.0f);
-                reading.RightThumbstickY = std::clamp(-MouseY / 50.0f, -1.0f, 1.0f);
-            }
+        GetCursorPos(&pos);
 
-            lastX = pos.X;
-            lastY = pos.Y;
+        float dx = pos.x - centerX;
+        float dy = pos.y - centerY;
 
-            if (args.CurrentPoint( ).Properties( ).IsLeftButtonPressed( )) {
-                reading.leftTrigger = 1.0f;
-            }
-            if (args.CurrentPoint( ).Properties( ).IsRightButtonPressed( )) {
-                reading.rightTrigger = 1.0f;
-            }
-        });
+        reading.RightThumbstickX = std::clamp(dx / 50.0f, -1.0f, 1.0f);
+        reading.RightThumbstickY = std::clamp(-dy / 50.0f, -1.0f, 1.0f);
+
+        SetCursorPos(centerX, centerY);
 
         return reading;
     }

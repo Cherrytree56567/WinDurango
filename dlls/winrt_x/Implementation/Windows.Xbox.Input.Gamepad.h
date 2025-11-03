@@ -32,8 +32,7 @@ namespace winrt::Windows::Xbox::Input::implementation
         bool IsTrusted();
         inline static winrt::Windows::Foundation::Collections::IVector<winrt::Windows::Xbox::Input::IGamepad> staticGamepads = { nullptr };
         uint64_t m_id{ 0 };
-        float lastX = 0;
-        float lastY = 0;
+        RawGamepadReading reading = {};
 
         inline static std::pair<WORD, GamepadButtons> const gamepadButtons[] =
         {
@@ -65,10 +64,10 @@ namespace winrt::Windows::Xbox::Input::implementation
             { VK_RSHIFT, GamepadButtons::RightThumbstick },
             { VK_LCONTROL, GamepadButtons::LeftShoulder },
             { VK_RCONTROL, GamepadButtons::RightShoulder },
-            { 'A', GamepadButtons::A },
-            { 'B', GamepadButtons::B},
-            { 'X', GamepadButtons::X },
-            { 'Y', GamepadButtons::Y},
+            { VK_SPACE, GamepadButtons::A },
+            { 'X', GamepadButtons::B},
+            { 'C', GamepadButtons::X },
+            { 'V', GamepadButtons::Y},
         };
     };
 }
