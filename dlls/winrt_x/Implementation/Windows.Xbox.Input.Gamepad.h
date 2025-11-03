@@ -1,9 +1,12 @@
 #pragma once
 #include "Windows.Xbox.Input.Gamepad.g.h"
 #include <Xinput.h>
+#include <windows.h>
+#include <winrt/Windows.UI.Core.h>
 
 namespace winrt::Windows::Xbox::Input::implementation
 {
+
     struct Gamepad : GamepadT<Gamepad>
     {
         Gamepad() = default;
@@ -29,6 +32,8 @@ namespace winrt::Windows::Xbox::Input::implementation
         bool IsTrusted();
         inline static winrt::Windows::Foundation::Collections::IVector<winrt::Windows::Xbox::Input::IGamepad> staticGamepads = { nullptr };
         uint64_t m_id{ 0 };
+        float lastX = 0;
+        float lastY = 0;
 
         inline static std::pair<WORD, GamepadButtons> const gamepadButtons[] =
         {
