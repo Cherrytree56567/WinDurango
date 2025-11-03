@@ -11,7 +11,7 @@ namespace winrt::Windows::Xbox::Input::implementation
 {
     winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Xbox::Input::IGamepad> Gamepad::Gamepads()
     {
-        LOG_INFO_W(L"Gamepad || Gamepads Queried!\n");
+        wprintf(L"Gamepad || Gamepads Queried!\n");
 
         if (staticGamepads == Foundation::Collections::IVector<winrt::Windows::Xbox::Input::IGamepad>(nullptr) || staticGamepads.Size( ) == 0) {
             staticGamepads = winrt::single_threaded_vector<Input::IGamepad>( );
@@ -21,7 +21,7 @@ namespace winrt::Windows::Xbox::Input::implementation
                 XINPUT_CAPABILITIES capabilities;
                 if (XInputGetCapabilities(gamepad, XINPUT_FLAG_GAMEPAD, &capabilities) == ERROR_SUCCESS)
                 {
-                    LOG_INFO_W(L"Gamepad || Gamepad %d Created!\n", gamepad);
+                    wprintf(L"Gamepad || Gamepad %d Created!\n", gamepad);
                     IGamepad newGamepad = winrt::make<Gamepad>(gamepad);
                     staticGamepads.Append(newGamepad);
                     continue;
@@ -30,37 +30,45 @@ namespace winrt::Windows::Xbox::Input::implementation
         }
 
         if (staticGamepads.Size( ) == 0) {
-            LOG_INFO_W(L"Gamepad || No Gamepads Found!\n");
+            wprintf(L"Gamepad || No Gamepads Found!\n");
             IGamepad dummyGamepad = winrt::make<Gamepad>(0);
             staticGamepads.Append(dummyGamepad);
         }
+
+        /*
+        * Register for mouse input
+        */
+        rid.usUsagePage = 0x01;
+        rid.usUsage = 0x02;
+        rid.dwFlags = RIDEV_INPUTSINK;
+        rid.hwndTarget = hwnd;
+        RegisterRawInputDevices(&rid, 1, sizeof(rid));
 
         return staticGamepads.GetView( );
     }
     winrt::event_token Gamepad::GamepadAdded(winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::Input::GamepadAddedEventArgs> const& handler)
     {
-        LOG_INFO_W(L"Gamepad || Gamepad Added!\n");
-		LOG_WARNING("Gamepad || GamepadAdded event is not implemented, returning empty token.");
-        return {};
+		wprintf(L"Gamepad || Gamepad Added!\n");
+        LOG_NOT_IMPLEMENTED(); return {};
     }
     void Gamepad::GamepadAdded(winrt::event_token const& token) noexcept
     {
-        LOG_INFO_W(L"Gamepad || Gamepad Added!\n");
+        wprintf(L"Gamepad || Gamepad Added!\n");
         LOG_NOT_IMPLEMENTED(); throw hresult_not_implemented();
     }
     winrt::event_token Gamepad::GamepadRemoved(winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::Input::GamepadRemovedEventArgs> const& handler)
     {
-		LOG_INFO_W(L"Gamepad || Gamepad Removed!\n");
+		wprintf(L"Gamepad || Gamepad Removed!\n");
         LOG_NOT_IMPLEMENTED(); return {};
     }
     void Gamepad::GamepadRemoved(winrt::event_token const& token) noexcept
     {
-        LOG_INFO_W(L"Gamepad || Gamepad Removed!\n");
+        wprintf(L"Gamepad || Gamepad Removed!\n");
         LOG_NOT_IMPLEMENTED(); throw hresult_not_implemented();
     }
     uint64_t Gamepad::Id()
     {
-		LOG_INFO_W(L"Gamepad || Gamepad ID ( %d ) Queried!\n", m_id);
+		wprintf(L"Gamepad || Gamepad ID ( %d ) Queried!\n", m_id);
         return m_id;
     }
     hstring Gamepad::Type()
@@ -69,7 +77,7 @@ namespace winrt::Windows::Xbox::Input::implementation
     }
     winrt::Windows::Xbox::System::User Gamepad::User()
     {
-		LOG_INFO_W(L"Gamepad || User Queried!\n");
+		wprintf(L"Gamepad || User Queried!\n");
 		return System::implementation::User::Users( ).GetAt(Id());
     }
     winrt::Windows::Xbox::Input::INavigationReading Gamepad::GetNavigationReading()
@@ -134,6 +142,31 @@ namespace winrt::Windows::Xbox::Input::implementation
 				reading.Buttons |= keyboardButtons[ i ].second;
 			}
         }
+
+        winrt::Windows::UI::Core::CoreWindow window = winrt::Windows::UI::Core::CoreWindow::GetForCurrentThread();
+
+        /*
+        * Mouse Support
+        */
+        window.PointerMoved([](auto&&, winrt::Windows::UI::Core::PointerEventArgs const& args)
+        {
+            auto pos = args.CurrentPoint().Position();
+            float MouseX = pos.X - lastX;
+            float MouseY = pos.Y - lastY;
+
+            reading.RightThumbstickX = std::clamp(MouseX / 50.0f, -1.0f, 1.0f);
+            reading.RightThumbstickY = std::clamp(-MouseY / 50.0f, -1.0f, 1.0f);
+
+            lastX = pos.X;
+            lastY = pos.Y;
+
+            if (args.CurrentPoint( ).Properties( ).IsLeftButtonPressed( )) {
+                reading.leftTrigger = 1.0f;
+            }
+            if (args.CurrentPoint( ).Properties( ).IsRightButtonPressed( )) {
+                reading.rightTrigger = 1.0f;
+            }
+        });
 
         return reading;
     }
