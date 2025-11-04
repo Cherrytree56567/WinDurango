@@ -1,236 +1,102 @@
 #include "pch.h"
 #include "FrameworkViewWrapper.h"
-#include <winrt/Windows.Foundation.h>
+
+
+
 
 HRESULT __stdcall FrameworkViewWrapper::Initialize(ABI::Windows::ApplicationModel::Core::ICoreApplicationView* applicationView)
 {
-    if (!m_realView)
-    {
-        wprintf(L"ERROR: m_realView is null in Initialize()\n");
-        return E_POINTER;
-    }
-
-    HRESULT hr = m_realView->Initialize(applicationView);
-    if (FAILED(hr))
-    {
-        wprintf(L"Initialize failed with HRESULT=0x%08X\n", hr);
-    }
-    return hr;
+	return m_realView->Initialize(applicationView);
 }
 
 HRESULT __stdcall FrameworkViewWrapper::SetWindow(ABI::Windows::UI::Core::ICoreWindow* window)
 {
-    if (!m_realView)
-    {
-        wprintf(L"ERROR: m_realView is null in SetWindow()\n");
-        return E_POINTER;
-    }
-
-    if (!window)
-    {
-        wprintf(L"ERROR: window parameter is null in SetWindow()\n");
-        return E_INVALIDARG;
-    }
-
-    // Wrap the CoreWindow with Xbox CoreWindow wrapper
-    ICoreWindow* wrappedWindow = reinterpret_cast<ICoreWindow*>(
-        new (std::nothrow) CoreWindowWrapperX(reinterpret_cast<CoreWindow*>(window)));
-
-    if (!wrappedWindow)
-    {
-        wprintf(L"ERROR: Failed to create CoreWindowWrapperX\n");
-        return E_OUTOFMEMORY;
-    }
-
-    // Pass to real view (it should AddRef if it needs to keep it)
-    HRESULT hr = m_realView->SetWindow(wrappedWindow);
-
-    // Release our reference
-    wrappedWindow->Release();
-
-    if (FAILED(hr))
-    {
-        wprintf(L"SetWindow failed with HRESULT=0x%08X\n", hr);
-    }
-
-    return hr;
+	// Finally Wraps the coreWindow with xbox CoreWindow
+	window = reinterpret_cast<ICoreWindow*>(new CoreWindowWrapperX((CoreWindow*)window));
+	return m_realView->SetWindow(window);
 }
+
 
 HRESULT __stdcall FrameworkViewWrapper::Load(HSTRING entryPoint)
 {
-    if (!m_realView)
-    {
-        wprintf(L"ERROR: m_realView is null in Load()\n");
-        return E_POINTER;
-    }
-
-    HRESULT hr = m_realView->Load(entryPoint);
-    if (FAILED(hr))
-    {
-        wprintf(L"Load failed with HRESULT=0x%08X\n", hr);
-    }
-    return hr;
+	return m_realView->Load(entryPoint);
 }
 
-HRESULT __stdcall FrameworkViewWrapper::Run()
-{
-    if (!m_realView)
-    {
-        wprintf(L"ERROR: m_realView is null in Run()\n");
-        return E_POINTER;
-    }
+#include <winrt/Windows.Foundation.h> // Include necessary namespace for Platform::COMException  
 
-    try
-    {
-        wprintf(L"Entering Run()\n");
-        HRESULT hr = m_realView->Run();
-
-        if (FAILED(hr))
-        {
-            wprintf(L"Run failed with HRESULT=0x%08X\n", hr);
-        }
-        else
-        {
-            wprintf(L"Run completed successfully\n");
-        }
-
-        return hr;
-    }
-    catch (winrt::hresult_error const& ex)
-    {
-        wprintf(L"winrt::hresult_error caught in Run: HRESULT=0x%08X, Message=%s\n",
-            ex.code(), ex.message().c_str());
-        return ex.code();
-    }
-    catch (std::exception const& ex)
-    {
-        wprintf(L"std::exception caught in Run: %S\n", ex.what());
-        return E_FAIL;
-    }
-    catch (...)
-    {
-        wprintf(L"Unknown exception caught in Run\n");
-        return E_FAIL;
-    }
+HRESULT __stdcall FrameworkViewWrapper::Run()  
+{  
+   try  
+   {  
+       wprintf(L"Entering Run()\n");  
+       return m_realView->Run();  
+   }  
+   catch (winrt::hresult_error const& ex) // Replace Platform::COMException with winrt::hresult_error  
+   {  
+       wprintf(L"COMException caught in Run: HRESULT=0x%08X\n", ex.code());  
+       throw; // Re-throw for debugger, or return E_FAIL  
+   }  
 }
+
 
 HRESULT __stdcall FrameworkViewWrapper::Uninitialize(void)
 {
-    if (!m_realView)
-    {
-        wprintf(L"ERROR: m_realView is null in Uninitialize()\n");
-        return E_POINTER;
-    }
-
-    HRESULT hr = m_realView->Uninitialize();
-    if (FAILED(hr))
-    {
-        wprintf(L"Uninitialize failed with HRESULT=0x%08X\n", hr);
-    }
-    return hr;
+	return m_realView->Uninitialize();
 }
 
 HRESULT FrameworkViewWrapper::QueryInterface(const IID& riid, void** ppvObject)
 {
-    if (!ppvObject)
-    {
-        return E_POINTER;
-    }
+	LPOLESTR str = nullptr;
+	StringFromIID(riid, &str);
+	wprintf(L"FrameworkViewWrapper [QI] IID Requested: %s\n", str);
+	CoTaskMemFree(str);
 
-    *ppvObject = nullptr;
+	if (riid == __uuidof(IFrameworkView) ||
+		riid == __uuidof(ICoreApplicationExit) ||
+		riid == __uuidof(IUnknown) ||
+		riid == __uuidof(IInspectable))
+	{
+		*ppvObject = this;
+		AddRef();
+		return S_OK;
+	}
+	else
+	{
+		/*/ DEBUG
+		char iidstr[sizeof("{AAAAAAAA-BBBB-CCCC-DDEE-FFGGHHIIJJKK}")];
+		OLECHAR iidwstr[sizeof(iidstr)];
+		StringFromGUID2(riid, iidwstr, ARRAYSIZE(iidwstr));
+		WideCharToMultiByte(CP_UTF8, 0, iidwstr, -1, iidstr, sizeof(iidstr), nullptr, nullptr);
+		MessageBoxA(nullptr, iidstr, typeid(*this).name(), MB_OK);*/
+	}
 
-    LPOLESTR str = nullptr;
-    if (SUCCEEDED(StringFromIID(riid, &str)))
-    {
-        wprintf(L"FrameworkViewWrapper [QI] IID Requested: %s\n", str);
-        CoTaskMemFree(str);
-    }
-
-    // Check for interfaces we implement directly
-    if (riid == __uuidof(IFrameworkView) ||
-        riid == __uuidof(ICoreApplicationExit) ||
-        riid == __uuidof(IUnknown) ||
-        riid == __uuidof(IInspectable))
-    {
-        *ppvObject = static_cast<IFrameworkView*>(this);
-        AddRef();
-        return S_OK;
-    }
-
-    // Delegate to real view
-    if (m_realView)
-    {
-        return m_realView->QueryInterface(riid, ppvObject);
-    }
-
-    return E_NOINTERFACE;
+	return m_realView->QueryInterface(riid, ppvObject);
 }
 
 ULONG FrameworkViewWrapper::AddRef()
 {
-    ULONG refCount = InterlockedIncrement(&m_RefCount);
-    wprintf(L"FrameworkViewWrapper::AddRef() -> %lu\n", refCount);
-    return refCount;
+	return InterlockedIncrement(&m_RefCount);
 }
 
 ULONG FrameworkViewWrapper::Release()
 {
-    ULONG refCount = InterlockedDecrement(&m_RefCount);
-    wprintf(L"FrameworkViewWrapper::Release() -> %lu\n", refCount);
-
-    if (refCount == 0)
-    {
-        wprintf(L"FrameworkViewWrapper: Deleting instance\n");
-        delete this;
-    }
-
-    return refCount;
+	ULONG refCount = InterlockedDecrement(&m_RefCount);
+	if (refCount == 0)
+		delete this;
+	return refCount;
 }
 
 HRESULT FrameworkViewWrapper::GetIids(ULONG* iidCount, IID** iids)
 {
-    if (!iidCount || !iids)
-    {
-        return E_POINTER;
-    }
-
-    if (!m_realView)
-    {
-        wprintf(L"ERROR: m_realView is null in GetIids()\n");
-        return E_POINTER;
-    }
-
-    return m_realView->GetIids(iidCount, iids);
+	return m_realView->GetIids(iidCount, iids);
 }
 
 HRESULT FrameworkViewWrapper::GetRuntimeClassName(HSTRING* className)
 {
-    if (!className)
-    {
-        return E_POINTER;
-    }
-
-    if (!m_realView)
-    {
-        wprintf(L"ERROR: m_realView is null in GetRuntimeClassName()\n");
-        return E_POINTER;
-    }
-
-    return m_realView->GetRuntimeClassName(className);
+	return m_realView->GetRuntimeClassName(className);
 }
 
 HRESULT FrameworkViewWrapper::GetTrustLevel(TrustLevel* trustLevel)
 {
-    if (!trustLevel)
-    {
-        return E_POINTER;
-    }
-
-    if (!m_realView)
-    {
-        wprintf(L"ERROR: m_realView is null in GetTrustLevel()\n");
-        return E_POINTER;
-    }
-
-    return m_realView->GetTrustLevel(trustLevel);
+	return m_realView->GetTrustLevel(trustLevel);
 }
