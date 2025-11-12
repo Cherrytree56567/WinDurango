@@ -1,12 +1,12 @@
+#include "pch.h"
 #include "Windows.Xbox.ApplicationModel.Store.ProductPurchasedEventArgs.h"
 #include "Windows.Xbox.ApplicationModel.Store.ProductPurchasedEventArgs.g.cpp"
-#include "pch.h"
+
 
 namespace winrt::Windows::Xbox::ApplicationModel::Store::implementation
 {
-hstring ProductPurchasedEventArgs::Receipt()
-{
-    LOG_NOT_IMPLEMENTED();
-    throw hresult_not_implemented();
+    hstring ProductPurchasedEventArgs::Receipt()
+    {
+        LOG_NOT_IMPLEMENTED(); throw hresult_not_implemented();
+    }
 }
-} // namespace winrt::Windows::Xbox::ApplicationModel::Store::implementation

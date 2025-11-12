@@ -1,14 +1,11 @@
+#include "pch.h"
 #include "Windows.Xbox.Management.Deployment.ContentMetadataPackager.h"
 #include "Windows.Xbox.Management.Deployment.ContentMetadataPackager.g.cpp"
-#include "pch.h"
 
 namespace winrt::Windows::Xbox::Management::Deployment::implementation
 {
-winrt::Windows::Foundation::Collections::PropertySet ContentMetadataPackager::PackageContentMetadata(
-    winrt::guid const &deviceId, winrt::guid const &contentId, hstring const &oneStoreProductId,
-    winrt::Windows::Xbox::Management::Deployment::ContentMetadata const &metadata)
-{
-    LOG_NOT_IMPLEMENTED();
-    throw hresult_not_implemented();
+    winrt::Windows::Foundation::Collections::PropertySet ContentMetadataPackager::PackageContentMetadata(winrt::guid const& deviceId, winrt::guid const& contentId, hstring const& oneStoreProductId, winrt::Windows::Xbox::Management::Deployment::ContentMetadata const& metadata)
+    {
+        LOG_NOT_IMPLEMENTED(); throw hresult_not_implemented();
+    }
 }
-} // namespace winrt::Windows::Xbox::Management::Deployment::implementation

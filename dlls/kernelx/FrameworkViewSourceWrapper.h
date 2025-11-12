@@ -3,23 +3,26 @@
 
 class FrameworkViewSourceWrapper : public IFrameworkViewSource
 {
-  public:
-    FrameworkViewSourceWrapper(IFrameworkViewSource *windowViewSource) : m_realViewSource(windowViewSource)
-    {
-    }
+public:
 
-    HRESULT STDMETHODCALLTYPE CreateView(ABI::Windows::ApplicationModel::Core::IFrameworkView **viewProvider) override;
+	FrameworkViewSourceWrapper(IFrameworkViewSource* windowViewSource)
+		: m_realViewSource(windowViewSource)
+	{
 
-    // IActivationFactory (IInspectable + IUnknown)
-    HRESULT QueryInterface(const IID &riid, void **ppvObject) override;
-    ULONG AddRef() override;
-    ULONG Release() override;
+	}
 
-    HRESULT GetIids(ULONG *iidCount, IID **iids) override;
-    HRESULT GetRuntimeClassName(HSTRING *className) override;
-    HRESULT GetTrustLevel(TrustLevel *trustLevel) override;
+	HRESULT STDMETHODCALLTYPE CreateView(ABI::Windows::ApplicationModel::Core::IFrameworkView** viewProvider) override;
 
-  private:
-    long m_RefCount = 1;
-    IFrameworkViewSource *m_realViewSource;
+	// IActivationFactory (IInspectable + IUnknown)
+	HRESULT QueryInterface(const IID& riid, void** ppvObject) override;
+	ULONG AddRef() override;
+	ULONG Release() override;
+
+	HRESULT GetIids(ULONG* iidCount, IID** iids) override;
+	HRESULT GetRuntimeClassName(HSTRING* className) override;
+	HRESULT GetTrustLevel(TrustLevel* trustLevel) override;
+
+private:
+	long m_RefCount = 1;
+	IFrameworkViewSource* m_realViewSource;
 };

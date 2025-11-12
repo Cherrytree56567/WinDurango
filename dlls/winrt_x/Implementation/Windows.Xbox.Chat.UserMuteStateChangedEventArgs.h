@@ -3,12 +3,12 @@
 
 namespace winrt::Windows::Xbox::Chat::implementation
 {
-struct UserMuteStateChangedEventArgs : UserMuteStateChangedEventArgsT<UserMuteStateChangedEventArgs>
-{
-    UserMuteStateChangedEventArgs() = default;
+    struct UserMuteStateChangedEventArgs : UserMuteStateChangedEventArgsT<UserMuteStateChangedEventArgs>
+    {
+        UserMuteStateChangedEventArgs() = default;
 
-    winrt::Windows::Xbox::System::IUser Owner();
-    hstring RecipientXboxUserId();
-    bool Muted();
-};
-} // namespace winrt::Windows::Xbox::Chat::implementation
+        winrt::Windows::Xbox::System::IUser Owner();
+        hstring RecipientXboxUserId();
+        bool Muted();
+    };
+}

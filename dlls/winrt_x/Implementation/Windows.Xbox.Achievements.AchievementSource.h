@@ -3,18 +3,14 @@
 
 namespace winrt::Windows::Xbox::Achievements::implementation
 {
-struct AchievementSource : AchievementSourceT<AchievementSource>
-{
-    AchievementSource() = default;
+    struct AchievementSource : AchievementSourceT<AchievementSource>
+    {
+        AchievementSource() = default;
 
-    winrt::event_token AchievementUnlocked(
-        winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::Achievements::AchievementUnlockedEventArgs> const
-            &handler);
-    void AchievementUnlocked(winrt::event_token const &token) noexcept;
+        winrt::event_token AchievementUnlocked(winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::Achievements::AchievementUnlockedEventArgs> const& handler);
+        void AchievementUnlocked(winrt::event_token const& token) noexcept;
 
-  private:
-    winrt::event<
-        winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::Achievements::AchievementUnlockedEventArgs>>
-        m_achievementUnlockedEvent;
-};
-} // namespace winrt::Windows::Xbox::Achievements::implementation
+    private:
+        winrt::event<winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::Achievements::AchievementUnlockedEventArgs>> m_achievementUnlockedEvent;
+    };
+}

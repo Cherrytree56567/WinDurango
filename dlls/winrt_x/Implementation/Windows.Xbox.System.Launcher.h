@@ -3,16 +3,16 @@
 
 namespace winrt::Windows::Xbox::System::implementation
 {
-struct Launcher
-{
-    Launcher() = default;
+    struct Launcher
+    {
+        Launcher() = default;
 
-    static winrt::Windows::Foundation::IAsyncOperation<bool> NavigateBackAsync();
-};
-} // namespace winrt::Windows::Xbox::System::implementation
+        static winrt::Windows::Foundation::IAsyncOperation<bool> NavigateBackAsync();
+    };
+}
 namespace winrt::Windows::Xbox::System::factory_implementation
 {
-struct Launcher : LauncherT<Launcher, implementation::Launcher>
-{
-};
-} // namespace winrt::Windows::Xbox::System::factory_implementation
+    struct Launcher : LauncherT<Launcher, implementation::Launcher>
+    {
+    };
+}

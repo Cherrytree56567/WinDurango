@@ -21,17 +21,17 @@ If you do not agree to these terms, you do not have permission to use this code.
 #include "windows.h"
 BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD forwardReason, LPVOID lpvReserved)
 {
-    constexpr BOOL result = TRUE;
+	constexpr BOOL result = TRUE;
 
-    switch (forwardReason)
-    {
-    case DLL_PROCESS_ATTACH:
-    case DLL_THREAD_ATTACH:
-    case DLL_THREAD_DETACH:
-    case DLL_PROCESS_DETACH:
-    default:
-        break;
-    }
+	switch (forwardReason)
+	{
+	case DLL_PROCESS_ATTACH:
+	case DLL_THREAD_ATTACH:
+	case DLL_THREAD_DETACH:
+	case DLL_PROCESS_DETACH:
+	default:
+		break;
+	}
 
-    return result;
+	return result;
 }

@@ -16,14 +16,12 @@ If you do not agree to these terms, you do not have permission to use this code.
 
 ================================================================================
 */
-#include "framework.h"
 #include "pch.h"
+#include "framework.h"
 
 #define MMDEVAPI_EXPORT(Name) __pragma(comment(linker, "/export:" #Name "=C:\\WINDOWS\\System32\\MMDevAPI." #Name))
-#define MMDEVAPI_EXPORT_ORDINAL(Name, Ordinal)                                                                         \
-    __pragma(comment(linker, "/export:" #Name "=C:\\WINDOWS\\System32\\MMDevAPI." #Name ",@" #Ordinal))
-#define MMDEVAPI_EXPORT_ORDINAL_PRIVATE(Name, Ordinal)                                                                 \
-    __pragma(comment(linker, "/export:" #Name "=C:\\WINDOWS\\System32\\MMDevAPI.#" #Ordinal ",@" #Ordinal ",NONAME"))
+#define MMDEVAPI_EXPORT_ORDINAL(Name, Ordinal) __pragma(comment(linker, "/export:" #Name "=C:\\WINDOWS\\System32\\MMDevAPI." #Name ",@" #Ordinal))
+#define MMDEVAPI_EXPORT_ORDINAL_PRIVATE(Name, Ordinal) __pragma(comment(linker, "/export:" #Name "=C:\\WINDOWS\\System32\\MMDevAPI.#" #Ordinal ",@" #Ordinal ",NONAME"))
 
 MMDEVAPI_EXPORT_ORDINAL_PRIVATE(CleanupDeviceAPI, 2)
 MMDEVAPI_EXPORT_ORDINAL_PRIVATE(InitializeDeviceAPI, 3)
@@ -63,16 +61,10 @@ MMDEVAPI_EXPORT_ORDINAL(DllGetClassObject, 36)
 MMDEVAPI_EXPORT_ORDINAL(DllRegisterServer, 37)
 MMDEVAPI_EXPORT_ORDINAL(DllUnregisterServer, 38)
 
-void DisableBitstreamOut_X()
-{
-}
-HRESULT EnableSpatialAudio_X()
-{
-    return S_OK;
-}
-void RestoreBitstreamOut_X()
-{
-}
+
+void DisableBitstreamOut_X() {}
+HRESULT EnableSpatialAudio_X() { return S_OK; }
+void RestoreBitstreamOut_X() {}
 
 DWORD_PTR __stdcall SetWasapiThreadAffinityMask_X(DWORD_PTR dwThreadAffinityMask)
 {
@@ -87,6 +79,5 @@ DWORD_PTR __stdcall SetWasapiThreadAffinityMask_X(DWORD_PTR dwThreadAffinityMask
     // Apply and return the previous affinity mask (0 on failure).
     return SetThreadAffinityMask(GetCurrentThread(), dwThreadAffinityMask);
 }
-void RefreshWasapiDeviceList_X()
-{
-}
+void RefreshWasapiDeviceList_X() {}
+

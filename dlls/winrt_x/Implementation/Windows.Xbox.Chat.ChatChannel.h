@@ -3,16 +3,16 @@
 
 namespace winrt::Windows::Xbox::Chat::implementation
 {
-struct ChatChannel : ChatChannelT<ChatChannel>
-{
-    ChatChannel() = default;
+    struct ChatChannel : ChatChannelT<ChatChannel>
+    {
+        ChatChannel() = default;
 
-    winrt::Windows::Foundation::Collections::IVector<winrt::Windows::Xbox::Chat::IChatParticipant> Participants();
-};
-} // namespace winrt::Windows::Xbox::Chat::implementation
+        winrt::Windows::Foundation::Collections::IVector<winrt::Windows::Xbox::Chat::IChatParticipant> Participants();
+    };
+}
 namespace winrt::Windows::Xbox::Chat::factory_implementation
 {
-struct ChatChannel : ChatChannelT<ChatChannel, implementation::ChatChannel>
-{
-};
-} // namespace winrt::Windows::Xbox::Chat::factory_implementation
+    struct ChatChannel : ChatChannelT<ChatChannel, implementation::ChatChannel>
+    {
+    };
+}

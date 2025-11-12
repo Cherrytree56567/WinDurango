@@ -3,16 +3,16 @@
 
 namespace winrt::Windows::Xbox::Networking::implementation
 {
-struct ErrorMessages
-{
-    ErrorMessages() = default;
+    struct ErrorMessages
+    {
+        ErrorMessages() = default;
 
-    static hstring GetMessageForError(uint32_t errorCode);
-};
-} // namespace winrt::Windows::Xbox::Networking::implementation
+        static hstring GetMessageForError(uint32_t errorCode);
+    };
+}
 namespace winrt::Windows::Xbox::Networking::factory_implementation
 {
-struct ErrorMessages : ErrorMessagesT<ErrorMessages, implementation::ErrorMessages>
-{
-};
-} // namespace winrt::Windows::Xbox::Networking::factory_implementation
+    struct ErrorMessages : ErrorMessagesT<ErrorMessages, implementation::ErrorMessages>
+    {
+    };
+}

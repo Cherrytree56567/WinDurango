@@ -1,13 +1,15 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
-#include "AcpHal.h"
 #include "pch.h"
+#include <stdlib.h> // Add this include at the top of the file
+#include <cstdio>
+#include <winternl.h>
 #include <corecrt_startup.h>
 #include <cstdint>
-#include <cstdio>
-#include <stdlib.h> // Add this include at the top of the file
-#include <winternl.h>
+#include "AcpHal.h"
 
-BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
+BOOL APIENTRY DllMain(HMODULE hModule,
+                      DWORD ul_reason_for_call,
+                      LPVOID lpReserved)
 {
     BOOL success = TRUE;
     BOOL dll_custom_init_success = 0;

@@ -1,18 +1,19 @@
 #pragma once
 #include "Microsoft.Xbox.Services.GameServerPlatform.GameVariant.g.h"
 
+
 namespace winrt::Microsoft::Xbox::Services::GameServerPlatform::implementation
 {
-struct GameVariant : GameVariantT<GameVariant>
-{
-    GameVariant() = default;
+    struct GameVariant : GameVariantT<GameVariant>
+    {
+        GameVariant() = default;
 
-    hstring Id();
-    hstring Name();
-    bool IsPublisher();
-    uint64_t Rank();
-    hstring SchemaContent();
-    hstring SchemaName();
-    hstring SchemaId();
-};
-} // namespace winrt::Microsoft::Xbox::Services::GameServerPlatform::implementation
+        hstring Id();
+        hstring Name();
+        bool IsPublisher();
+        uint64_t Rank();
+        hstring SchemaContent();
+        hstring SchemaName();
+        hstring SchemaId();
+    };
+}

@@ -13,15 +13,15 @@ struct CForzaThread
 
 struct FmodThread
 {
-    void *virtualtable;
+    void* virtualtable;
     char Name[256];
 };
 
-DWORD (*P_StartForzaThread_X)(CForzaThread *, LPTHREAD_START_ROUTINE, LPVOID);
+DWORD(*P_StartForzaThread_X)(CForzaThread*, LPTHREAD_START_ROUTINE, LPVOID);
 
-DWORD (*P_FmodThreadProc_X)(FmodThread *);
+DWORD(*P_FmodThreadProc_X)(FmodThread*);
 
-DWORD D_StartForzaThread_X(CForzaThread *Thread, LPTHREAD_START_ROUTINE StartAddress, LPVOID Parameter)
+DWORD D_StartForzaThread_X(CForzaThread* Thread, LPTHREAD_START_ROUTINE StartAddress, LPVOID Parameter)
 {
     WCHAR ThreadName[128];
     ZeroMemory(ThreadName, sizeof(ThreadName));
@@ -31,7 +31,7 @@ DWORD D_StartForzaThread_X(CForzaThread *Thread, LPTHREAD_START_ROUTINE StartAdd
     return r;
 }
 
-DWORD D_FmodThreadProc_X(FmodThread *Thread)
+DWORD D_FmodThreadProc_X(FmodThread* Thread)
 {
     WCHAR ThreadName[256];
     MultiByteToWideChar(CP_UTF8, 0, Thread->Name, 256, ThreadName, 256);

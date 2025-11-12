@@ -3,10 +3,10 @@
 
 namespace winrt::Windows::Xbox::Multiplayer::implementation
 {
-struct PartyStateChangedEventArgs : PartyStateChangedEventArgsT<PartyStateChangedEventArgs>
-{
-    PartyStateChangedEventArgs() = default;
+    struct PartyStateChangedEventArgs : PartyStateChangedEventArgsT<PartyStateChangedEventArgs>
+    {
+        PartyStateChangedEventArgs() = default;
 
-    winrt::Windows::Xbox::Multiplayer::PartyView PartyView();
-};
-} // namespace winrt::Windows::Xbox::Multiplayer::implementation
+        winrt::Windows::Xbox::Multiplayer::PartyView PartyView();
+    };
+}

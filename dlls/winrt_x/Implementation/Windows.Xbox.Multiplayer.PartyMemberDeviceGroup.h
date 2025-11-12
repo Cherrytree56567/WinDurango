@@ -3,10 +3,10 @@
 
 namespace winrt::Windows::Xbox::Multiplayer::implementation
 {
-struct PartyMemberDeviceGroup : PartyMemberDeviceGroupT<PartyMemberDeviceGroup>
-{
-    PartyMemberDeviceGroup() = default;
+    struct PartyMemberDeviceGroup : PartyMemberDeviceGroupT<PartyMemberDeviceGroup>
+    {
+        PartyMemberDeviceGroup() = default;
 
-    winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Xbox::Multiplayer::PartyMember> Members();
-};
-} // namespace winrt::Windows::Xbox::Multiplayer::implementation
+        winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Xbox::Multiplayer::PartyMember> Members();
+    };
+}

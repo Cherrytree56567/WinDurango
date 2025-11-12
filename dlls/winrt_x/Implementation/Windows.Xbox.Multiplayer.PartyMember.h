@@ -3,12 +3,12 @@
 
 namespace winrt::Windows::Xbox::Multiplayer::implementation
 {
-struct PartyMember : PartyMemberT<PartyMember>
-{
-    PartyMember() = default;
+    struct PartyMember : PartyMemberT<PartyMember>
+    {
+        PartyMember() = default;
 
-    hstring XboxUserId();
-    bool IsLocal();
-    winrt::Windows::Foundation::DateTime JoinTime();
-};
-} // namespace winrt::Windows::Xbox::Multiplayer::implementation
+        hstring XboxUserId();
+        bool IsLocal();
+        winrt::Windows::Foundation::DateTime JoinTime();
+    };
+}

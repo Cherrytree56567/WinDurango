@@ -3,12 +3,12 @@
 
 namespace winrt::Microsoft::Xbox::Services::implementation
 {
-struct HttpCallRequestMessage : HttpCallRequestMessageT<HttpCallRequestMessage>
-{
-    HttpCallRequestMessage() = default;
+    struct HttpCallRequestMessage : HttpCallRequestMessageT<HttpCallRequestMessage>
+    {
+        HttpCallRequestMessage() = default;
 
-    hstring RequestMessageString();
-    com_array<uint8_t> RequestMessageVector();
-    winrt::Microsoft::Xbox::Services::HttpRequestMessageType GetHttpRequestMessageType();
-};
-} // namespace winrt::Microsoft::Xbox::Services::implementation
+        hstring RequestMessageString();
+        com_array<uint8_t> RequestMessageVector();
+        winrt::Microsoft::Xbox::Services::HttpRequestMessageType GetHttpRequestMessageType();
+    };
+}

@@ -3,23 +3,23 @@
 
 namespace winrt::Windows::Xbox::Input::implementation
 {
-struct NavigationReading : NavigationReadingT<NavigationReading>
-{
-    NavigationReading() = default;
+    struct NavigationReading : NavigationReadingT<NavigationReading>
+    {
+        NavigationReading() = default;
 
-    winrt::Windows::Foundation::DateTime Timestamp();
-    winrt::Windows::Xbox::Input::NavigationButtons Buttons();
-    bool IsUpPressed();
-    bool IsDownPressed();
-    bool IsLeftPressed();
-    bool IsRightPressed();
-    bool IsMenuPressed();
-    bool IsViewPressed();
-    bool IsPreviousPagePressed();
-    bool IsNextPagePressed();
-    bool IsAcceptPressed();
-    bool IsCancelPressed();
-    bool IsXPressed();
-    bool IsYPressed();
-};
-} // namespace winrt::Windows::Xbox::Input::implementation
+        winrt::Windows::Foundation::DateTime Timestamp();
+        winrt::Windows::Xbox::Input::NavigationButtons Buttons();
+        bool IsUpPressed();
+        bool IsDownPressed();
+        bool IsLeftPressed();
+        bool IsRightPressed();
+        bool IsMenuPressed();
+        bool IsViewPressed();
+        bool IsPreviousPagePressed();
+        bool IsNextPagePressed();
+        bool IsAcceptPressed();
+        bool IsCancelPressed();
+        bool IsXPressed();
+        bool IsYPressed();
+    };
+}

@@ -3,12 +3,12 @@
 
 namespace winrt::Microsoft::Xbox::GameChat::implementation
 {
-struct ChatPerformanceTime : ChatPerformanceTimeT<ChatPerformanceTime>
-{
-    ChatPerformanceTime() = default;
+    struct ChatPerformanceTime : ChatPerformanceTimeT<ChatPerformanceTime>
+    {
+        ChatPerformanceTime() = default;
 
-    double MinTimeInMilliseconds();
-    double MaxTimeInMilliseconds();
-    double AverageTimeInMilliseconds();
-};
-} // namespace winrt::Microsoft::Xbox::GameChat::implementation
+        double MinTimeInMilliseconds();
+        double MaxTimeInMilliseconds();
+        double AverageTimeInMilliseconds();
+    };
+}

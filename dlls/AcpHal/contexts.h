@@ -1,7 +1,6 @@
 #pragma once
 #include "AcpHal.h"
-struct SHAPE_EQCOMP_CONTEXT
-{
+struct SHAPE_EQCOMP_CONTEXT {
     UINT32 timestamp : 21;
     UINT32 reserved0 : 2;
     UINT32 internalSaturate : 1;
@@ -85,8 +84,7 @@ struct SHAPE_EQCOMP_CONTEXT
     UINT32 compGainTarget : 16;
 };
 
-struct SHAPE_SRC_CONTEXT
-{
+struct SHAPE_SRC_CONTEXT {
     UINT32 timestamp : 21;
     UINT32 blocksToSkip : 2;
     UINT32 internalSaturate : 1;
@@ -102,11 +100,10 @@ struct SHAPE_SRC_CONTEXT
     UINT32 reserved1 : 7;
     UINT32 samplingIncrementTarget : 21;
     UINT32 reserved2 : 11;
-    UINT32 reserved3[3];
+    UINT32 reserved3[ 3 ];
 };
 
-struct SHAPE_FILTVOL_CONTEXT
-{
+struct SHAPE_FILTVOL_CONTEXT {
     UINT32 timestamp : 21;
     UINT32 reserved0 : 2;
     UINT32 internalSaturate : 1;
@@ -128,8 +125,7 @@ struct SHAPE_FILTVOL_CONTEXT
     UINT32 reserved4 : 8;
 };
 
-struct SHAPE_DMA_CONTEXT
-{
+struct SHAPE_DMA_CONTEXT {
     UINT32 timestamp : 21;
     UINT32 reserved0 : 3;
     UINT32 mixBufPeakMag : 4;
@@ -152,8 +148,7 @@ struct SHAPE_DMA_CONTEXT
     UINT32 reserved8 : 5;
 };
 
-struct SHAPE_XMA_CONTEXT
-{
+struct SHAPE_XMA_CONTEXT {
     UINT32 sizeRead0 : 12;
     UINT32 numLoops : 8;
     UINT32 validBuffer : 2;
@@ -186,12 +181,11 @@ struct SHAPE_XMA_CONTEXT
     UINT32 reserved3 : 25;
     UINT32 stopWhenDone : 1;
     UINT32 interruptWhenDone : 1;
-    UINT32 reserved4[2];
-    UINT32 reserved5[1];
+    UINT32 reserved4[ 2 ];
+    UINT32 reserved5[ 1 ];
 };
 
-struct SHAPE_PCM_CONTEXT
-{
+struct SHAPE_PCM_CONTEXT {
     UINT32 bufferStart : 32;
     UINT32 bufferLength : 21;
     UINT32 reserved0 : 11;
@@ -211,3 +205,5 @@ struct SHAPE_PCM_CONTEXT
     UINT32 reserved7 : 14;
     UINT32 reserved8;
 };
+
+

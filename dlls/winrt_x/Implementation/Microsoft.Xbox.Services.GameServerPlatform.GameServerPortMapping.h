@@ -1,14 +1,15 @@
 #pragma once
 #include "Microsoft.Xbox.Services.GameServerPlatform.GameServerPortMapping.g.h"
 
+
 namespace winrt::Microsoft::Xbox::Services::GameServerPlatform::implementation
 {
-struct GameServerPortMapping : GameServerPortMappingT<GameServerPortMapping>
-{
-    GameServerPortMapping() = default;
+    struct GameServerPortMapping : GameServerPortMappingT<GameServerPortMapping>
+    {
+        GameServerPortMapping() = default;
 
-    hstring PortName();
-    uint32_t InternalPortNumber();
-    uint32_t ExternalPortNumber();
-};
-} // namespace winrt::Microsoft::Xbox::Services::GameServerPlatform::implementation
+        hstring PortName();
+        uint32_t InternalPortNumber();
+        uint32_t ExternalPortNumber();
+    };
+}

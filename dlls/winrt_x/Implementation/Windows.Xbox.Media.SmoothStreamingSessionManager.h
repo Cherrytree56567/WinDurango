@@ -3,21 +3,17 @@
 
 namespace winrt::Windows::Xbox::Media::implementation
 {
-struct SmoothStreamingSessionManager : SmoothStreamingSessionManagerT<SmoothStreamingSessionManager>
-{
-    SmoothStreamingSessionManager() = default;
+    struct SmoothStreamingSessionManager : SmoothStreamingSessionManagerT<SmoothStreamingSessionManager>
+    {
+        SmoothStreamingSessionManager() = default;
 
-    winrt::event_token SessionCreated(
-        winrt::Windows::Foundation::TypedEventHandler<winrt::Windows::Xbox::Media::ISmoothStreamingSessionManager,
-                                                      winrt::Windows::Xbox::Media::ISmoothStreamingSession> const
-            &session);
-    void SessionCreated(winrt::event_token const &cookie) noexcept;
-};
-} // namespace winrt::Windows::Xbox::Media::implementation
+        winrt::event_token SessionCreated(winrt::Windows::Foundation::TypedEventHandler<winrt::Windows::Xbox::Media::ISmoothStreamingSessionManager, winrt::Windows::Xbox::Media::ISmoothStreamingSession> const& session);
+        void SessionCreated(winrt::event_token const& cookie) noexcept;
+    };
+}
 namespace winrt::Windows::Xbox::Media::factory_implementation
 {
-struct SmoothStreamingSessionManager
-    : SmoothStreamingSessionManagerT<SmoothStreamingSessionManager, implementation::SmoothStreamingSessionManager>
-{
-};
-} // namespace winrt::Windows::Xbox::Media::factory_implementation
+    struct SmoothStreamingSessionManager : SmoothStreamingSessionManagerT<SmoothStreamingSessionManager, implementation::SmoothStreamingSessionManager>
+    {
+    };
+}
