@@ -3,12 +3,14 @@
 
 namespace winrt::Windows::Xbox::Multiplayer::implementation
 {
-    struct GamePlayersChangedEventArgs : GamePlayersChangedEventArgsT<GamePlayersChangedEventArgs>
-    {
-        GamePlayersChangedEventArgs() = default;
+struct GamePlayersChangedEventArgs : GamePlayersChangedEventArgsT<GamePlayersChangedEventArgs>
+{
+    GamePlayersChangedEventArgs() = default;
 
-        winrt::Windows::Xbox::Multiplayer::MultiplayerSessionReference GameSession();
-        winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Xbox::Multiplayer::GamePlayer> AvailablePlayers();
-        winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Xbox::Multiplayer::GamePlayerDeviceGroup> AvailablePlayersGroupedByDevice();
-    };
-}
+    winrt::Windows::Xbox::Multiplayer::MultiplayerSessionReference GameSession();
+    winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Xbox::Multiplayer::GamePlayer>
+    AvailablePlayers();
+    winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Xbox::Multiplayer::GamePlayerDeviceGroup>
+    AvailablePlayersGroupedByDevice();
+};
+} // namespace winrt::Windows::Xbox::Multiplayer::implementation

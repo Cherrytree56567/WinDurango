@@ -3,9 +3,8 @@
 
 namespace winrt::Windows::Xbox::SmartGlass::implementation
 {
-    struct SmartGlassTextEntryEventArgs : SmartGlassTextEntryEventArgsT<SmartGlassTextEntryEventArgs>
-    {
-        SmartGlassTextEntryEventArgs() = default;
-
-    };
-}
+struct SmartGlassTextEntryEventArgs : SmartGlassTextEntryEventArgsT<SmartGlassTextEntryEventArgs>
+{
+    SmartGlassTextEntryEventArgs() = default;
+};
+} // namespace winrt::Windows::Xbox::SmartGlass::implementation

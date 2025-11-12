@@ -3,19 +3,24 @@
 
 namespace winrt::Windows::Xbox::Chat::implementation
 {
-    struct ChatMuteList
-    {
-        ChatMuteList() = default;
+struct ChatMuteList
+{
+    ChatMuteList() = default;
 
-        static winrt::event_token UserMuteStateChanged(winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::Chat::UserMuteStateChangedEventArgs> const& handler);
-        static void UserMuteStateChanged(winrt::event_token const& token) noexcept;
-    private:
-        inline static winrt::event<winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::Chat::UserMuteStateChangedEventArgs>> m_muteEvent;
-    };
-}
+    static winrt::event_token UserMuteStateChanged(
+        winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::Chat::UserMuteStateChangedEventArgs> const
+            &handler);
+    static void UserMuteStateChanged(winrt::event_token const &token) noexcept;
+
+  private:
+    inline static winrt::event<
+        winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::Chat::UserMuteStateChangedEventArgs>>
+        m_muteEvent;
+};
+} // namespace winrt::Windows::Xbox::Chat::implementation
 namespace winrt::Windows::Xbox::Chat::factory_implementation
 {
-    struct ChatMuteList : ChatMuteListT<ChatMuteList, implementation::ChatMuteList>
-    {
-    };
-}
+struct ChatMuteList : ChatMuteListT<ChatMuteList, implementation::ChatMuteList>
+{
+};
+} // namespace winrt::Windows::Xbox::Chat::factory_implementation

@@ -1,18 +1,17 @@
 #pragma once
 #include "Microsoft.Xbox.Services.Achievements.AchievementReward.g.h"
 
-
 namespace winrt::Microsoft::Xbox::Services::Achievements::implementation
 {
-    struct AchievementReward : AchievementRewardT<AchievementReward>
-    {
-        AchievementReward() = default;
+struct AchievementReward : AchievementRewardT<AchievementReward>
+{
+    AchievementReward() = default;
 
-        hstring Name();
-        hstring Description();
-        hstring Data();
-        winrt::Microsoft::Xbox::Services::Achievements::AchievementRewardType RewardType();
-        winrt::Windows::Foundation::PropertyType ValuePropertyType();
-        winrt::Microsoft::Xbox::Services::Achievements::AchievementMediaAsset MediaAsset();
-    };
-}
+    hstring Name();
+    hstring Description();
+    hstring Data();
+    winrt::Microsoft::Xbox::Services::Achievements::AchievementRewardType RewardType();
+    winrt::Windows::Foundation::PropertyType ValuePropertyType();
+    winrt::Microsoft::Xbox::Services::Achievements::AchievementMediaAsset MediaAsset();
+};
+} // namespace winrt::Microsoft::Xbox::Services::Achievements::implementation

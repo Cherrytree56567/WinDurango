@@ -3,11 +3,11 @@
 
 namespace winrt::Windows::Xbox::Multiplayer::implementation
 {
-    struct PartyChatMember : PartyChatMemberT<PartyChatMember>
-    {
-        PartyChatMember() = default;
+struct PartyChatMember : PartyChatMemberT<PartyChatMember>
+{
+    PartyChatMember() = default;
 
-        hstring XboxUserId();
-        bool IsLocal();
-    };
-}
+    hstring XboxUserId();
+    bool IsLocal();
+};
+} // namespace winrt::Windows::Xbox::Multiplayer::implementation

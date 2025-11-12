@@ -3,10 +3,11 @@
 
 namespace winrt::Windows::Xbox::Networking::implementation
 {
-    struct SecureDeviceAssociationIncomingEventArgs : SecureDeviceAssociationIncomingEventArgsT<SecureDeviceAssociationIncomingEventArgs>
-    {
-        SecureDeviceAssociationIncomingEventArgs() = default;
+struct SecureDeviceAssociationIncomingEventArgs
+    : SecureDeviceAssociationIncomingEventArgsT<SecureDeviceAssociationIncomingEventArgs>
+{
+    SecureDeviceAssociationIncomingEventArgs() = default;
 
-        winrt::Windows::Xbox::Networking::SecureDeviceAssociation Association();
-    };
-}
+    winrt::Windows::Xbox::Networking::SecureDeviceAssociation Association();
+};
+} // namespace winrt::Windows::Xbox::Networking::implementation

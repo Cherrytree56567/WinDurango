@@ -17,16 +17,14 @@ If you do not agree to these terms, you do not have permission to use this code.
 ================================================================================
 */
 #include "dxgi_adapter.h"
-#include "dxgi_factory.h"
 #include "../common/Logger.h"
+#include "dxgi_factory.h"
 
-HRESULT wd::dxgi_adapter::GetParent(const IID& riid, void** ppParent)
+HRESULT wd::dxgi_adapter::GetParent(const IID &riid, void **ppParent)
 {
-    if (riid == __uuidof(IDXGIFactory) ||
-		riid == __uuidof(IDXGIFactory1) ||
-		riid == __uuidof(IDXGIFactory2))
+    if (riid == __uuidof(IDXGIFactory) || riid == __uuidof(IDXGIFactory1) || riid == __uuidof(IDXGIFactory2))
     {
-        IDXGIFactory2* factory = nullptr;
+        IDXGIFactory2 *factory = nullptr;
         HRESULT hr = wrapped_interface->GetParent(IID_PPV_ARGS(&factory));
         *ppParent = new dxgi_factory(factory);
         this->AddRef();
@@ -38,18 +36,18 @@ HRESULT wd::dxgi_adapter::GetParent(const IID& riid, void** ppParent)
     return E_NOINTERFACE;
 }
 
-HRESULT wd::dxgi_adapter::EnumOutputs(UINT Output, IDXGIOutput** ppOutput)
+HRESULT wd::dxgi_adapter::EnumOutputs(UINT Output, IDXGIOutput **ppOutput)
 {
-	return wrapped_interface->EnumOutputs(Output, ppOutput);
+    return wrapped_interface->EnumOutputs(Output, ppOutput);
 }
 
-HRESULT wd::dxgi_adapter::GetDesc(DXGI_ADAPTER_DESC* pDesc)
+HRESULT wd::dxgi_adapter::GetDesc(DXGI_ADAPTER_DESC *pDesc)
 {
-	return wrapped_interface->GetDesc(pDesc);
+    return wrapped_interface->GetDesc(pDesc);
 }
 
-HRESULT wd::dxgi_adapter::CheckInterfaceSupport(const GUID& InterfaceName, LARGE_INTEGER* pUMDVersion)
+HRESULT wd::dxgi_adapter::CheckInterfaceSupport(const GUID &InterfaceName, LARGE_INTEGER *pUMDVersion)
 {
-	LOG_WARNING("WARN: dxgi_adapter::CheckInterfaceSupport is likely to fail due no support for d3d11.x!!!\n");
-	return wrapped_interface->CheckInterfaceSupport(InterfaceName, pUMDVersion);
+    LOG_WARNING("WARN: dxgi_adapter::CheckInterfaceSupport is likely to fail due no support for d3d11.x!!!\n");
+    return wrapped_interface->CheckInterfaceSupport(InterfaceName, pUMDVersion);
 }

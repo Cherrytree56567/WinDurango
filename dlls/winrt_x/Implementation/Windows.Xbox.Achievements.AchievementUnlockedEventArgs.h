@@ -3,16 +3,16 @@
 
 namespace winrt::Windows::Xbox::Achievements::implementation
 {
-    struct AchievementUnlockedEventArgs : AchievementUnlockedEventArgsT<AchievementUnlockedEventArgs>
-    {
-        AchievementUnlockedEventArgs() = default;
+struct AchievementUnlockedEventArgs : AchievementUnlockedEventArgsT<AchievementUnlockedEventArgs>
+{
+    AchievementUnlockedEventArgs() = default;
 
-        winrt::Windows::Xbox::System::User User();
-        hstring TitleId();
-        hstring ServiceConfigurationId();
-        hstring AchievementId();
-        winrt::Windows::Foundation::DateTime UnlockTime();
-        winrt::Windows::Foundation::Uri ExtendedInfoUrl();
-        winrt::Windows::Foundation::Collections::IVectorView<hstring> InAppRewardValue();
-    };
-}
+    winrt::Windows::Xbox::System::User User();
+    hstring TitleId();
+    hstring ServiceConfigurationId();
+    hstring AchievementId();
+    winrt::Windows::Foundation::DateTime UnlockTime();
+    winrt::Windows::Foundation::Uri ExtendedInfoUrl();
+    winrt::Windows::Foundation::Collections::IVectorView<hstring> InAppRewardValue();
+};
+} // namespace winrt::Windows::Xbox::Achievements::implementation

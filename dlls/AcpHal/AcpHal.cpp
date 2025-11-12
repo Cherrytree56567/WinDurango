@@ -1,56 +1,65 @@
 ﻿// AcpHal.cpp
-#include "pch.h"
 #include "AcpHal.h"
+#include "pch.h"
 
+#include "contexts.h"
 #include <basetyps.h>
 #include <cstdio>
-#include <stdlib.h>
-#include "contexts.h"
 #include <intsafe.h>
 #include <new>
-//#include "../common/DebugLogger.h"
+#include <stdlib.h>
+// #include "../common/DebugLogger.h"
 
-static APU_HEAP g_ApuHeap = { 0 };
-HRESULT AcpHalAllocateShapeContexts_X(SHAPE_CONTEXTS* ctx) {
+static APU_HEAP g_ApuHeap = {0};
+HRESULT AcpHalAllocateShapeContexts_X(SHAPE_CONTEXTS *ctx)
+{
     if (!ctx)
         return E_INVALIDARG;
 
     memset(ctx, 0, sizeof(SHAPE_CONTEXTS));
 
     if (ctx->numSrcContexts > 0)
-        ctx->srcContextArray = static_cast<SHAPE_SRC_CONTEXT*>(malloc(sizeof(SHAPE_SRC_CONTEXT) * ctx->numSrcContexts));
+        ctx->srcContextArray =
+            static_cast<SHAPE_SRC_CONTEXT *>(malloc(sizeof(SHAPE_SRC_CONTEXT) * ctx->numSrcContexts));
 
     if (ctx->numEqCompContexts > 0)
-        ctx->eqCompContextArray = static_cast<SHAPE_EQCOMP_CONTEXT*>(malloc(sizeof(SHAPE_EQCOMP_CONTEXT) * ctx->numEqCompContexts));
+        ctx->eqCompContextArray =
+            static_cast<SHAPE_EQCOMP_CONTEXT *>(malloc(sizeof(SHAPE_EQCOMP_CONTEXT) * ctx->numEqCompContexts));
 
     if (ctx->numFiltVolContexts > 0)
-        ctx->filtVolContextArray = static_cast<SHAPE_FILTVOL_CONTEXT*>(malloc(sizeof(SHAPE_FILTVOL_CONTEXT) * ctx->numFiltVolContexts));
+        ctx->filtVolContextArray =
+            static_cast<SHAPE_FILTVOL_CONTEXT *>(malloc(sizeof(SHAPE_FILTVOL_CONTEXT) * ctx->numFiltVolContexts));
 
     if (ctx->numDmaContexts > 0)
-        ctx->dmaContextArray = static_cast<SHAPE_DMA_CONTEXT*>(malloc(sizeof(SHAPE_DMA_CONTEXT) * ctx->numDmaContexts));
+        ctx->dmaContextArray =
+            static_cast<SHAPE_DMA_CONTEXT *>(malloc(sizeof(SHAPE_DMA_CONTEXT) * ctx->numDmaContexts));
 
     if (ctx->numXmaContexts > 0)
-        ctx->xmaContextArray = static_cast<SHAPE_XMA_CONTEXT*>(malloc(sizeof(SHAPE_XMA_CONTEXT) * ctx->numXmaContexts));
+        ctx->xmaContextArray =
+            static_cast<SHAPE_XMA_CONTEXT *>(malloc(sizeof(SHAPE_XMA_CONTEXT) * ctx->numXmaContexts));
 
     if (ctx->numPcmContexts > 0)
-        ctx->pcmContextArray = static_cast<SHAPE_PCM_CONTEXT*>(malloc(sizeof(SHAPE_PCM_CONTEXT) * ctx->numPcmContexts));
+        ctx->pcmContextArray =
+            static_cast<SHAPE_PCM_CONTEXT *>(malloc(sizeof(SHAPE_PCM_CONTEXT) * ctx->numPcmContexts));
 
-    printf("[AcpHalAllocateShapeContexts_X] Allocated shape context arrays."); 
+    printf("[AcpHalAllocateShapeContexts_X] Allocated shape context arrays.");
     return S_OK;
 }
 
-
-HRESULT AcpHalReleaseShapeContexts_X() {
-    //DEBUG_LOG();
+HRESULT AcpHalReleaseShapeContexts_X()
+{
+    // DEBUG_LOG();
 
     // Free any previously allocated context arrays
-    if (g_ApuHeap.NonCached) {
+    if (g_ApuHeap.NonCached)
+    {
         free(g_ApuHeap.NonCached);
         g_ApuHeap.NonCached = NULL;
         g_ApuHeap.NonCachedSize = 0;
     }
 
-    if (g_ApuHeap.Cached) {
+    if (g_ApuHeap.Cached)
+    {
         free(g_ApuHeap.Cached);
         g_ApuHeap.Cached = NULL;
         g_ApuHeap.CachedSize = 0;
@@ -59,12 +68,12 @@ HRESULT AcpHalReleaseShapeContexts_X() {
     return S_OK;
 }
 
-HRESULT __stdcall AcpHalCreate_X(IAcpHal** acpInterface)
+HRESULT __stdcall AcpHalCreate_X(IAcpHal **acpInterface)
 {
     if (!acpInterface)
         return E_POINTER;
 
-    AcpHal* instance = new (std::nothrow) AcpHal();
+    AcpHal *instance = new (std::nothrow) AcpHal();
     if (!instance)
         return E_OUTOFMEMORY;
 
@@ -73,15 +82,8 @@ HRESULT __stdcall AcpHalCreate_X(IAcpHal** acpInterface)
     return S_OK;
 }
 
-
-
-HRESULT ApuAlloc_X(
-    void** virtualAddress,
-    APU_ADDRESS* physicalAddress,
-    UINT32 sizeInBytes,
-    UINT32 alignmentInBytes,
-    UINT32 flags
-)
+HRESULT ApuAlloc_X(void **virtualAddress, APU_ADDRESS *physicalAddress, UINT32 sizeInBytes, UINT32 alignmentInBytes,
+                   UINT32 flags)
 {
     if (!virtualAddress || sizeInBytes == 0 || alignmentInBytes == 0)
         return E_INVALIDARG;
@@ -93,7 +95,7 @@ HRESULT ApuAlloc_X(
         return E_INVALIDARG;
 
     // Use aligned malloc for safe CPU-side simulation
-    void* alignedPtr = _aligned_malloc(sizeInBytes, alignmentInBytes);
+    void *alignedPtr = _aligned_malloc(sizeInBytes, alignmentInBytes);
     if (!alignedPtr)
         return E_OUTOFMEMORY;
 
@@ -103,25 +105,28 @@ HRESULT ApuAlloc_X(
     if (physicalAddress)
         *physicalAddress = reinterpret_cast<APU_ADDRESS>(alignedPtr);
 
-    printf("[ApuAlloc_X] Allocated %u bytes at 0x%p (aligned to %u bytes), flags=0x%X, phys=0x%llX\n",
-        sizeInBytes, alignedPtr, alignmentInBytes, flags,
-        physicalAddress ? *physicalAddress : 0);
+    printf("[ApuAlloc_X] Allocated %u bytes at 0x%p (aligned to %u bytes), flags=0x%X, phys=0x%llX\n", sizeInBytes,
+           alignedPtr, alignmentInBytes, flags, physicalAddress ? *physicalAddress : 0);
 
     return S_OK;
 }
 
 HRESULT __stdcall ApuCreateHeap_X(UINT32 cachedSizeInBytes, UINT32 nonCachedSizeInBytes)
 {
-    if (g_ApuHeap.Cached || g_ApuHeap.NonCached) {
+    if (g_ApuHeap.Cached || g_ApuHeap.NonCached)
+    {
         return E_FAIL; // already initialized
     }
 
     g_ApuHeap.Cached = cachedSizeInBytes > 0 ? malloc(cachedSizeInBytes) : NULL;
     g_ApuHeap.NonCached = nonCachedSizeInBytes > 0 ? malloc(nonCachedSizeInBytes) : NULL;
 
-    if ((cachedSizeInBytes && !g_ApuHeap.Cached) || (nonCachedSizeInBytes && !g_ApuHeap.NonCached)) {
-        if (g_ApuHeap.Cached) free(g_ApuHeap.Cached);
-        if (g_ApuHeap.NonCached) free(g_ApuHeap.NonCached);
+    if ((cachedSizeInBytes && !g_ApuHeap.Cached) || (nonCachedSizeInBytes && !g_ApuHeap.NonCached))
+    {
+        if (g_ApuHeap.Cached)
+            free(g_ApuHeap.Cached);
+        if (g_ApuHeap.NonCached)
+            free(g_ApuHeap.NonCached);
         g_ApuHeap.Cached = NULL;
         g_ApuHeap.NonCached = NULL;
         g_ApuHeap.CachedSize = 0;
@@ -134,28 +139,25 @@ HRESULT __stdcall ApuCreateHeap_X(UINT32 cachedSizeInBytes, UINT32 nonCachedSize
     return S_OK;
 }
 
-HRESULT __stdcall ApuHeapGetState_X(ApuHeapState* apuHeapState, UINT32 flags)
+HRESULT __stdcall ApuHeapGetState_X(ApuHeapState *apuHeapState, UINT32 flags)
 {
-    //DEBUG_LOG();
+    // DEBUG_LOG();
 
     if (!apuHeapState)
         return E_POINTER;
 
     apuHeapState->bytesFree = 0; // Not tracked
     apuHeapState->bytesAllocated = g_ApuHeap.CachedSize + g_ApuHeap.NonCachedSize;
-    apuHeapState->bytesLost = 0; // Not tracked
+    apuHeapState->bytesLost = 0;                 // Not tracked
     apuHeapState->maximumBlockSizeAvailable = 0; // Not tracked
-    apuHeapState->allocationCount = 0; // Not tracked
+    apuHeapState->allocationCount = 0;           // Not tracked
 
     return S_OK;
 }
 
-bool ApuIsVirtualAddressValid_X(
-         const void* virtualAddress,
-         UINT32 physicalAlignmentInBytes
-)
+bool ApuIsVirtualAddressValid_X(const void *virtualAddress, UINT32 physicalAlignmentInBytes)
 {
-    //DEBUG_LOG();
+    // DEBUG_LOG();
 
     if (!virtualAddress || physicalAlignmentInBytes == 0)
         return false;
@@ -165,7 +167,7 @@ bool ApuIsVirtualAddressValid_X(
     return isAligned;
 }
 
-HRESULT ApuFree_X(void* virtualAddress)
+HRESULT ApuFree_X(void *virtualAddress)
 {
     if (!virtualAddress)
         return E_INVALIDARG;
@@ -175,15 +177,14 @@ HRESULT ApuFree_X(void* virtualAddress)
     return S_OK;
 }
 
-APU_ADDRESS __stdcall ApuMapVirtualAddress_X(const void* virtualAddress) {
-    //DEBUG_LOG();
+APU_ADDRESS __stdcall ApuMapVirtualAddress_X(const void *virtualAddress)
+{
+    // DEBUG_LOG();
     return reinterpret_cast<APU_ADDRESS>(virtualAddress);
 }
 
-void* ApuMapApuAddress_X(
-         APU_ADDRESS apuPhysicalAddress
-)
+void *ApuMapApuAddress_X(APU_ADDRESS apuPhysicalAddress)
 {
-    //DEBUG_LOG();
-    return reinterpret_cast<void*>(apuPhysicalAddress);
+    // DEBUG_LOG();
+    return reinterpret_cast<void *>(apuPhysicalAddress);
 }

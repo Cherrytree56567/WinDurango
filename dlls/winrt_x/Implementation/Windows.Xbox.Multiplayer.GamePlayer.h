@@ -3,12 +3,12 @@
 
 namespace winrt::Windows::Xbox::Multiplayer::implementation
 {
-    struct GamePlayer : GamePlayerT<GamePlayer>
-    {
-        GamePlayer() = default;
+struct GamePlayer : GamePlayerT<GamePlayer>
+{
+    GamePlayer() = default;
 
-        hstring XboxUserId();
-        winrt::Windows::Foundation::DateTime LastInvitedTime();
-        winrt::Windows::Foundation::DateTime PartyJoinTime();
-    };
-}
+    hstring XboxUserId();
+    winrt::Windows::Foundation::DateTime LastInvitedTime();
+    winrt::Windows::Foundation::DateTime PartyJoinTime();
+};
+} // namespace winrt::Windows::Xbox::Multiplayer::implementation

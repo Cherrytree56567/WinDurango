@@ -3,16 +3,16 @@
 
 namespace winrt::Windows::Xbox::ApplicationModel::Store::implementation
 {
-    struct Configuration
-    {
-        Configuration() = default;
+struct Configuration
+{
+    Configuration() = default;
 
-        static hstring MarketplaceId();
-    };
-}
+    static hstring MarketplaceId();
+};
+} // namespace winrt::Windows::Xbox::ApplicationModel::Store::implementation
 namespace winrt::Windows::Xbox::ApplicationModel::Store::factory_implementation
 {
-    struct Configuration : ConfigurationT<Configuration, implementation::Configuration>
-    {
-    };
-}
+struct Configuration : ConfigurationT<Configuration, implementation::Configuration>
+{
+};
+} // namespace winrt::Windows::Xbox::ApplicationModel::Store::factory_implementation
