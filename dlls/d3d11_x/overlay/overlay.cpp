@@ -104,12 +104,12 @@ void SetupImGuiKeyboardInputUWP()
             if (key != ImGuiKey_None)
                 ImGui::GetIO().AddKeyEvent(key, false);
         }));
-
+    /*
     window.CharacterReceived(TypedEventHandler<CoreWindow, CharacterReceivedEventArgs>(
         [](CoreWindow const&, CharacterReceivedEventArgs const& args)
         {
             ImGui::GetIO().AddInputCharacter(static_cast<unsigned int>(args.KeyCode()));
-        }));
+        }));*/
 }
 ImGuiKey MapVirtualKeyToImGuiKey(VirtualKey key)
 {
@@ -280,7 +280,7 @@ void wd::Overlay::RenderKeyboardWindow( )
     ImGui::PushStyleColor(ImGuiCol_Button, IM_COL32(0x37, 0x37, 0x37, 0xFF));
     ImGui::PushItemWidth(-FLT_MIN);
     ImGui::PushStyleColor(ImGuiCol_FrameBg, IM_COL32(0x05, 0x05, 0x05, 0xFF));
-    ImGui::InputText("", g_KeyboardText, IM_ARRAYSIZE(g_KeyboardText), ImGuiInputTextFlags_CallbackAlways,
+    ImGui::InputText("", g_KeyboardText, IM_ARRAYSIZE(g_KeyboardText), ImGuiInputTextFlags_CallbackAlways | ImGuiInputTextFlags_ReadOnly,
     [](ImGuiInputTextCallbackData* data) -> int {
         data->CursorPos = cursorPos;
         return 0;
@@ -511,6 +511,22 @@ void wd::Overlay::RenderKeyboardWindow( )
     ImGui::PopStyleColor( );
     ImGui::End( );
     ImGui::PopStyleColor( );
+
+    for (int i = 0; i < io.InputQueueCharacters.Size; i++)
+    {
+        ImWchar c = io.InputQueueCharacters[ i ];
+        if (c >= 32 && c < 127)
+        {
+            size_t len = strlen(g_KeyboardText);
+            if (len + 1 < IM_ARRAYSIZE(g_KeyboardText))
+            {
+                g_KeyboardText[ len ] = (char) c;
+                g_KeyboardText[ len + 1 ] = '\0';
+                cursorPos++;
+            }
+        }
+    }
+    io.InputQueueCharacters.clear( );
 }
 
 void wd::Overlay::RenderKeyboardRow(const char** keys, int start, int end, bool isUppercase)

@@ -41,7 +41,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common", "dlls\common\commo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XFrontPanelDisplay", "dlls\XFrontPanelDisplay\XFrontPanelDisplay.vcxproj", "{4A5072B4-8304-4CC4-88C1-CF875110FF47}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XAudio2_9", "dlls\XAudio2_9\XAudio2_9.vcxproj", "{0C02E6B1-4532-4194-8891-11DDC164C0A8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XAudio2_9_x", "dlls\XAudio2_9\XAudio2_9.vcxproj", "{0C02E6B1-4532-4194-8891-11DDC164C0A8}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Detours", "thirdparty\Detours\vc\Detours.vcxproj", "{37489709-8054-4903-9C49-A79846049FC9}"
 EndProject

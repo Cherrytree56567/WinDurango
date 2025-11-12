@@ -60,9 +60,7 @@ namespace winrt::Windows::Xbox::Input::implementation
         bool firstFrame = true;
         bool menuOpened = false;
         WinDurangoConfig& wdcfg;
-        bool isCtrl = false;
         static int currNeed;
-        int currDone;
         static bool isMC;
 
         inline static std::pair<WORD, GamepadButtons> const gamepadButtons[] =

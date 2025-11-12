@@ -8,6 +8,7 @@
 #include <winrt/Windows.UI.Input.h>
 #include <windowsx.h>
 #include <Xinput.h>
+#include <iostream>
 #include "Windows.Xbox.System.User.h"
 #include "../WinDurangoConfig.h"
 
@@ -59,8 +60,15 @@ namespace winrt::Windows::Xbox::Input::implementation
                     [&](winrt::Windows::UI::Core::CoreWindow const&, winrt::Windows::UI::Core::PointerEventArgs const& args)
                     {
                         auto delta = args.CurrentPoint().Properties().MouseWheelDelta();
-                        int scrollUnits = delta / 120.0f;
-                        Gamepad::currNeed += scrollUnits;
+                        float scrollUnits = delta / 120.0f;
+                        if (scrollUnits < 1 && scrollUnits > 0.1f) {
+                            Gamepad::currNeed += 1;
+                        }
+                        else if (scrollUnits > -1 && scrollUnits < -0.1f) {
+                            Gamepad::currNeed -= 1;
+                        } else {
+                            Gamepad::currNeed += (int)scrollUnits;
+                        }
                         LOG_INFO_W((L"Wheel delta: " + std::to_wstring(scrollUnits) + L"\n").c_str());
                     }
                 )
@@ -157,6 +165,7 @@ namespace winrt::Windows::Xbox::Input::implementation
 
     winrt::Windows::Xbox::Input::RawGamepadReading Gamepad::GetRawCurrentReading()
     {
+
         XINPUT_STATE xiState;
         ZeroMemory(&xiState, sizeof(XINPUT_STATE));
         reading = {};
@@ -310,23 +319,13 @@ namespace winrt::Windows::Xbox::Input::implementation
         deltasumY = 0.0f;
 
         if (currNeed != 0) {
-            if (!isCtrl) {
-                isCtrl = true;
-                if (currNeed > 0) {
-                    reading.Buttons |= GamepadButtons::RightShoulder;
-                }
-                else if (currNeed < 0) {
-                    reading.Buttons |= GamepadButtons::LeftShoulder;
-                }
+            if (currNeed > 0) {
+                reading.Buttons |= GamepadButtons::RightShoulder;
+                currNeed--;
             }
-            else {
-                isCtrl = false;
-                if (currNeed > 0) {
-                    currNeed--;
-                }
-                else if (currNeed < 0) {
-                    currNeed++;
-                }
+            else if (currNeed < 0) {
+                reading.Buttons |= GamepadButtons::LeftShoulder;
+                currNeed++;
             }
         }
 
