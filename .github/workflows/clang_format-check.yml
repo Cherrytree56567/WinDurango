@@ -1,0 +1,106 @@
+# Single-file workflow that checks clang-format (Microsoft style) only on files changed in the current diff.
+# - Runs on PRs and pushes to main/master.
+# - Installs clang-format, computes changed files relative to the base ref, filters file extensions, and fails if any changed file is not formatted.
+#
+# Drop this single file into .github/workflows/clang-format-diff.yml.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+  push:
+    branches:
+      - main
+      - master
+
+name: clang-format-diff
+
+env:
+  # Defaults - tweak as needed
+  DEFAULT_BASE: main
+  EXTENSIONS: c,cc,cpp,cxx,h,hh,hpp,hxx
+  CLANG_FMT_PKG: clang-format
+  STYLE: Microsoft
+
+jobs:
+  clang-format:
+    name: Check clang-format on changed files (Microsoft style)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install clang-format
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y "${CLANG_FMT_PKG}"
+
+      - name: Run clang-format check on changed files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Determine base ref: PR base ref for PRs, DEFAULT_BASE for pushes
+          if [ "${GITHUB_EVENT_NAME}" = "pull_request" ]; then
+            base_ref="${{ github.event.pull_request.base.ref }}"
+          else
+            base_ref="${DEFAULT_BASE}"
+          fi
+
+          echo "Comparing against base ref: ${base_ref}"
+
+          # Ensure the base ref exists locally; try a shallow fetch first
+          git fetch origin "${base_ref}" --depth=1 >/dev/null 2>&1 || git fetch origin "${base_ref}" >/dev/null 2>&1 || true
+
+          # Compute changed files between base and HEAD (three-dot to include branch commits)
+          changed_files="$(git diff --name-only "origin/${base_ref}"...HEAD || true)"
+
+          if [ -z "${changed_files}" ]; then
+            echo "No changed files detected relative to origin/${base_ref}."
+            exit 0
+          fi
+
+          # Build a regex from EXTENSIONS (comma-separated, no leading dots)
+          IFS=',' read -r -a ext_array <<< "${EXTENSIONS}"
+          ext_regex="\.($(printf '%s|' "${ext_array[@]}" | sed 's/|$//'))$"
+
+          # Filter the changed files to those matching the extensions
+          mapfile -t files < <(printf '%s\n' "${changed_files}" | grep -E "${ext_regex}" || true)
+
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "No files matching extensions (${EXTENSIONS}) changed. Nothing to check."
+            exit 0
+          fi
+
+          echo "Checking formatting for the following files:"
+          printf ' - %s\n' "${files[@]}"
+
+          failed=()
+          for f in "${files[@]}"; do
+            # Skip deleted files
+            if [ ! -f "${f}" ]; then
+              echo "Skipping deleted/missing file: ${f}"
+              continue
+            fi
+
+            # Compare the file with clang-formatted output using Microsoft style.
+            if ! diff -u "${f}" <(clang-format -style="${STYLE}" "${f}") >/dev/null 2>&1; then
+              failed+=("${f}")
+            fi
+          done
+
+          if [ ${#failed[@]} -ne 0 ]; then
+            echo
+            echo "The following changed files are not properly formatted with clang-format (style=${STYLE}):"
+            printf ' - %s\n' "${failed[@]}"
+            echo
+            echo "To fix locally, run:"
+            echo "  clang-format -style=${STYLE} -i <file>"
+            echo
+            for file in "${failed[@]}"; do
+              echo "::error file=${file}::clang-format (${STYLE}): file is not formatted"
+            done
+            exit 1
+          fi
+
+          echo "All changed files matching extensions (${EXTENSIONS}) are properly formatted with clang-format (style=${STYLE})."
