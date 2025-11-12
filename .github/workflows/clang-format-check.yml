@@ -1,14 +1,49 @@
-name: clang-format Check
-on: [push, pull_request]
+# name: clang-format Check
+# on: [push, pull_request]
+# jobs:
+#   formatting-check:
+#     name: Formatting Check
+#     runs-on: ubuntu-latest
+#     steps:
+#     - uses: actions/checkout@v4
+#     - name: Run clang-format style check for C/C++/Protobuf programs.
+#       uses: jidicula/clang-format-action@v4.16.0
+#       with:
+#         clang-format-version: '21'
+#         check-path: 'src'
+#         fallback-style: 'Microsoft'
+
+
+name: clang-fromat Check
+on: [pull_request]
+
 jobs:
-  formatting-check:
-    name: Formatting Check
+  clang-format-checking:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Run clang-format style check for C/C++/Protobuf programs.
-      uses: jidicula/clang-format-action@v4.16.0
-      with:
-        clang-format-version: '21'
-        check-path: 'src'
-        fallback-style: 'Microsoft'
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Ensure we have enough history to compare
+
+      # Use an action to identify changed files
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v42
+        with:
+          # Filter only the relevant file extensions
+          files: |
+            **.c
+            **.cpp
+            **.h
+
+      # Run a clang-format action only if relevant files changed
+      - name: Run clang-format check
+        # This step only runs if the previous step found files matching the pattern
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: jidicula/clang-format-action@v4.16.0
+        with:
+          # Pass the list of changed files to the action using the 'check-path' input
+          check-path: ${{ steps.changed-files.outputs.all_changed_files }}
+          fallback-style: 'Microsoft'
+          # Use specific clang-format version for consistency
+          clang-format-version: '21'
