@@ -3,11 +3,11 @@
 
 namespace winrt::Microsoft::Xbox::GameChat::implementation
 {
-    struct DebugMessageEventArgs : DebugMessageEventArgsT<DebugMessageEventArgs>
-    {
-        DebugMessageEventArgs() = default;
+struct DebugMessageEventArgs : DebugMessageEventArgsT<DebugMessageEventArgs>
+{
+    DebugMessageEventArgs() = default;
 
-        hstring Message();
-        int32_t ErrorCode();
-    };
-}
+    hstring Message();
+    int32_t ErrorCode();
+};
+} // namespace winrt::Microsoft::Xbox::GameChat::implementation

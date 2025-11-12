@@ -1,15 +1,17 @@
-#include "pch.h"
 #include "Microsoft.Xbox.GameChat.DebugMessageEventArgs.h"
 #include "Microsoft.Xbox.GameChat.DebugMessageEventArgs.g.cpp"
+#include "pch.h"
 
 namespace winrt::Microsoft::Xbox::GameChat::implementation
 {
-    hstring DebugMessageEventArgs::Message()
-    {
-        LOG_NOT_IMPLEMENTED(); throw hresult_not_implemented();
-    }
-    int32_t DebugMessageEventArgs::ErrorCode()
-    {
-        LOG_NOT_IMPLEMENTED(); throw hresult_not_implemented();
-    }
+hstring DebugMessageEventArgs::Message()
+{
+    LOG_NOT_IMPLEMENTED();
+    throw hresult_not_implemented();
 }
+int32_t DebugMessageEventArgs::ErrorCode()
+{
+    LOG_NOT_IMPLEMENTED();
+    throw hresult_not_implemented();
+}
+} // namespace winrt::Microsoft::Xbox::GameChat::implementation

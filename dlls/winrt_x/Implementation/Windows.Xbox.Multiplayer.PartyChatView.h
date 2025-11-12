@@ -3,10 +3,10 @@
 
 namespace winrt::Windows::Xbox::Multiplayer::implementation
 {
-    struct PartyChatView : PartyChatViewT<PartyChatView>
-    {
-        PartyChatView() = default;
+struct PartyChatView : PartyChatViewT<PartyChatView>
+{
+    PartyChatView() = default;
 
-        winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Xbox::Multiplayer::PartyChatMember> Members();
-    };
-}
+    winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Xbox::Multiplayer::PartyChatMember> Members();
+};
+} // namespace winrt::Windows::Xbox::Multiplayer::implementation

@@ -3,16 +3,17 @@
 
 namespace winrt::Windows::Xbox::Media::implementation
 {
-    struct GameTransportControlsPropertyChangedEventArgs :
-        GameTransportControlsPropertyChangedEventArgsT<GameTransportControlsPropertyChangedEventArgs>
+struct GameTransportControlsPropertyChangedEventArgs
+    : GameTransportControlsPropertyChangedEventArgsT<GameTransportControlsPropertyChangedEventArgs>
+{
+    GameTransportControlsPropertyChangedEventArgs(winrt::Windows::Xbox::Media::GameTransportControlsProperty property)
+        : m_property(property)
     {
-        GameTransportControlsPropertyChangedEventArgs(winrt::Windows::Xbox::Media::GameTransportControlsProperty property)
-            : m_property(property) {
-        }
+    }
 
-        winrt::Windows::Xbox::Media::GameTransportControlsProperty Property();
+    winrt::Windows::Xbox::Media::GameTransportControlsProperty Property();
 
-    private:
-        winrt::Windows::Xbox::Media::GameTransportControlsProperty m_property{};
-    };
-}
+  private:
+    winrt::Windows::Xbox::Media::GameTransportControlsProperty m_property{};
+};
+} // namespace winrt::Windows::Xbox::Media::implementation

@@ -3,16 +3,19 @@
 
 namespace winrt::Windows::Xbox::Management::Deployment::implementation
 {
-    struct ContentMetadataPackager : ContentMetadataPackagerT<ContentMetadataPackager>
-    {
-        ContentMetadataPackager() = default;
+struct ContentMetadataPackager : ContentMetadataPackagerT<ContentMetadataPackager>
+{
+    ContentMetadataPackager() = default;
 
-        winrt::Windows::Foundation::Collections::PropertySet PackageContentMetadata(winrt::guid const& deviceId, winrt::guid const& contentId, hstring const& oneStoreProductId, winrt::Windows::Xbox::Management::Deployment::ContentMetadata const& metadata);
-    };
-}
+    winrt::Windows::Foundation::Collections::PropertySet PackageContentMetadata(
+        winrt::guid const &deviceId, winrt::guid const &contentId, hstring const &oneStoreProductId,
+        winrt::Windows::Xbox::Management::Deployment::ContentMetadata const &metadata);
+};
+} // namespace winrt::Windows::Xbox::Management::Deployment::implementation
 namespace winrt::Windows::Xbox::Management::Deployment::factory_implementation
 {
-    struct ContentMetadataPackager : ContentMetadataPackagerT<ContentMetadataPackager, implementation::ContentMetadataPackager>
-    {
-    };
-}
+struct ContentMetadataPackager
+    : ContentMetadataPackagerT<ContentMetadataPackager, implementation::ContentMetadataPackager>
+{
+};
+} // namespace winrt::Windows::Xbox::Management::Deployment::factory_implementation

@@ -3,10 +3,10 @@
 
 namespace winrt::Windows::Kinect::implementation
 {
-    struct AudioBodyCorrelation : AudioBodyCorrelationT<AudioBodyCorrelation>
-    {
-        AudioBodyCorrelation() = default;
+struct AudioBodyCorrelation : AudioBodyCorrelationT<AudioBodyCorrelation>
+{
+    AudioBodyCorrelation() = default;
 
-        uint64_t BodyTrackingId();
-    };
-}
+    uint64_t BodyTrackingId();
+};
+} // namespace winrt::Windows::Kinect::implementation

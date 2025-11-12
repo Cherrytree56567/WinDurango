@@ -28,4 +28,4 @@ If you do not agree to these terms, you do not have permission to use this code.
 // add headers that you want to pre-compile here
 #include "framework.h"
 
-#endif //PCH_H
+#endif // PCH_H

@@ -3,10 +3,10 @@
 
 namespace winrt::Windows::Kinect::implementation
 {
-    struct AudioFrameArrivedEventArgs : AudioFrameArrivedEventArgsT<AudioFrameArrivedEventArgs>
-    {
-        AudioFrameArrivedEventArgs() = default;
+struct AudioFrameArrivedEventArgs : AudioFrameArrivedEventArgsT<AudioFrameArrivedEventArgs>
+{
+    AudioFrameArrivedEventArgs() = default;
 
-        winrt::Windows::Kinect::AudioBeamFrameReference FrameReference();
-    };
-}
+    winrt::Windows::Kinect::AudioBeamFrameReference FrameReference();
+};
+} // namespace winrt::Windows::Kinect::implementation

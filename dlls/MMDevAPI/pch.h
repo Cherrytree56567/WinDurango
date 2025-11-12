@@ -10,4 +10,4 @@
 // add the headers you want to precompile here
 #include "framework.h"
 
-#endif //PCH_H
+#endif // PCH_H

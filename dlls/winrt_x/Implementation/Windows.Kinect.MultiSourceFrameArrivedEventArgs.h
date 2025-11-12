@@ -1,13 +1,12 @@
 #pragma once
 #include "Windows.Kinect.MultiSourceFrameArrivedEventArgs.g.h"
 
-
 namespace winrt::Windows::Kinect::implementation
 {
-    struct MultiSourceFrameArrivedEventArgs : MultiSourceFrameArrivedEventArgsT<MultiSourceFrameArrivedEventArgs>
-    {
-        MultiSourceFrameArrivedEventArgs() = default;
+struct MultiSourceFrameArrivedEventArgs : MultiSourceFrameArrivedEventArgsT<MultiSourceFrameArrivedEventArgs>
+{
+    MultiSourceFrameArrivedEventArgs() = default;
 
-        winrt::Windows::Kinect::MultiSourceFrameReference FrameReference();
-    };
-}
+    winrt::Windows::Kinect::MultiSourceFrameReference FrameReference();
+};
+} // namespace winrt::Windows::Kinect::implementation

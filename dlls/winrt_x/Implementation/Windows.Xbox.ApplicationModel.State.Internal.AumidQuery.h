@@ -3,16 +3,17 @@
 
 namespace winrt::Windows::Xbox::ApplicationModel::State::Internal::implementation
 {
-    struct AumidQuery
-    {
-        AumidQuery() = default;
+struct AumidQuery
+{
+    AumidQuery() = default;
 
-        static void GetXboxLiveInfo(hstring const& aumid, uint32_t& titleId, winrt::guid& primaryScid, bool& requireXboxLive);
-    };
-}
+    static void GetXboxLiveInfo(hstring const &aumid, uint32_t &titleId, winrt::guid &primaryScid,
+                                bool &requireXboxLive);
+};
+} // namespace winrt::Windows::Xbox::ApplicationModel::State::Internal::implementation
 namespace winrt::Windows::Xbox::ApplicationModel::State::Internal::factory_implementation
 {
-    struct AumidQuery : AumidQueryT<AumidQuery, implementation::AumidQuery>
-    {
-    };
-}
+struct AumidQuery : AumidQueryT<AumidQuery, implementation::AumidQuery>
+{
+};
+} // namespace winrt::Windows::Xbox::ApplicationModel::State::Internal::factory_implementation

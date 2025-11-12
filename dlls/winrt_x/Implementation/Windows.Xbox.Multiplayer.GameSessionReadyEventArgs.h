@@ -3,10 +3,10 @@
 
 namespace winrt::Windows::Xbox::Multiplayer::implementation
 {
-    struct GameSessionReadyEventArgs : GameSessionReadyEventArgsT<GameSessionReadyEventArgs>
-    {
-        GameSessionReadyEventArgs() = default;
+struct GameSessionReadyEventArgs : GameSessionReadyEventArgsT<GameSessionReadyEventArgs>
+{
+    GameSessionReadyEventArgs() = default;
 
-        winrt::Windows::Xbox::Multiplayer::MultiplayerSessionReference GameSession();
-    };
-}
+    winrt::Windows::Xbox::Multiplayer::MultiplayerSessionReference GameSession();
+};
+} // namespace winrt::Windows::Xbox::Multiplayer::implementation

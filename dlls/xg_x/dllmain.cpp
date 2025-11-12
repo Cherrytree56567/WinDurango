@@ -19,10 +19,7 @@ If you do not agree to these terms, you do not have permission to use this code.
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "pch.h"
 
-BOOL APIENTRY DllMain(HMODULE hModule,
-                       DWORD  ul_reason_for_call,
-                       LPVOID lpReserved
-                    )
+BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
 {
     switch (ul_reason_for_call)
     {
@@ -34,4 +31,3 @@ BOOL APIENTRY DllMain(HMODULE hModule,
     }
     return TRUE;
 }
-

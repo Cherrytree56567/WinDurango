@@ -1,13 +1,13 @@
-#include "pch.h"
 #include "../common/common.h"
+#include "pch.h"
 
 uint32_t dword_180021AA0[16];
 uint32_t dword_180021A60[16];
 int64_t qword_18002C7E0[34];
 HANDLE HeapHandle;
 // Global function pointers for memory allocation and deallocation
-PVOID(__fastcall* XmpAllocRoutine)(SIZE_T, uint64_t) = nullptr;
-BOOLEAN(__stdcall* XmpFreeRoutine)(PVOID, uint64_t) = nullptr;
+PVOID(__fastcall *XmpAllocRoutine)(SIZE_T, uint64_t) = nullptr;
+BOOLEAN(__stdcall *XmpFreeRoutine)(PVOID, uint64_t) = nullptr;
 // Define the global critical section lock
 XmpAllocationHookLock_t XmpAllocationHookLock = {
     &XmpAllocationHookLock_DEBUG, // Pointer to debug info
@@ -19,78 +19,84 @@ XmpAllocationHookLock_t XmpAllocationHookLock = {
 };
 
 // Define the debug info structure (can be initialized later if needed)
-RTL_CRITICAL_SECTION_DEBUG XmpAllocationHookLock_DEBUG = { 0 };
-
+RTL_CRITICAL_SECTION_DEBUG XmpAllocationHookLock_DEBUG = {0};
 
 // Define the global variables here (only once)
-void* XmpHeaps[32] = { 0 };
+void *XmpHeaps[32] = {0};
 
 int XmpHeapPageTypes[16] = {
-    PAGE_READWRITE,         // 0 - Standard heap memory
-    PAGE_READWRITE,         // 1 - General memory use
-    PAGE_READWRITE,         // 2 - Shared memory
-    0,                      // 3 - Unused/invalid
-    PAGE_READWRITE,         // 4 - Standard heap allocation
-    PAGE_READWRITE,         // 5 - Memory-mapped I/O
-    PAGE_READWRITE,         // 6 - Stack allocation
-    0,                      // 7 - Unused/invalid
-    PAGE_READWRITE,         // 8 - System memory allocation
-    0,                      // 9 - Unused
-    PAGE_EXECUTE_READ,      // 10 - Executable code memory
-    0,                      // 11 - Unused
-    PAGE_READWRITE,         // 12 - Shared heap
-    0,                      // 13 - Unused
-    PAGE_READWRITE,         // 14 - Custom memory pool
-    0                       // 15 - Reserved
+    PAGE_READWRITE,    // 0 - Standard heap memory
+    PAGE_READWRITE,    // 1 - General memory use
+    PAGE_READWRITE,    // 2 - Shared memory
+    0,                 // 3 - Unused/invalid
+    PAGE_READWRITE,    // 4 - Standard heap allocation
+    PAGE_READWRITE,    // 5 - Memory-mapped I/O
+    PAGE_READWRITE,    // 6 - Stack allocation
+    0,                 // 7 - Unused/invalid
+    PAGE_READWRITE,    // 8 - System memory allocation
+    0,                 // 9 - Unused
+    PAGE_EXECUTE_READ, // 10 - Executable code memory
+    0,                 // 11 - Unused
+    PAGE_READWRITE,    // 12 - Shared heap
+    0,                 // 13 - Unused
+    PAGE_READWRITE,    // 14 - Custom memory pool
+    0                  // 15 - Reserved
 };
 
 const int XmpHeapAllocationTypes[16] = {
-    MEM_COMMIT | MEM_RESERVE,   // 0: Standard committed memory
-    MEM_LARGE_PAGES,            // 1: Large page allocation (if supported)
-    MEM_COMMIT,                 // 2: Committed memory only
-    MEM_RESERVE,                // 3: Reserved memory (uncommitted)
-    MEM_TOP_DOWN,               // 4: Allocate from highest address
-    MEM_WRITE_WATCH,            // 5: Write-watched memory pages
-    MEM_COMMIT | MEM_TOP_DOWN,  // 6: Committed with top-down allocation
-    MEM_RESERVE | MEM_TOP_DOWN, // 7: Reserved with top-down allocation
-    MEM_PHYSICAL,               // 8: Physical memory mapping
-    MEM_RESET,                  // 9: Reset memory (discards data)
-    MEM_RESET_UNDO,             // 10: Undo memory reset
-    MEM_LARGE_PAGES | MEM_COMMIT, // 11: Large Pages with Commit
-    MEM_MAPPED,                 // 12: Mapped memory
-    MEM_PRIVATE,                // 13: Private memory allocation
-    MEM_COMMIT | MEM_LARGE_PAGES, // 14: Large Pages with Commit (alt)
+    MEM_COMMIT | MEM_RESERVE,               // 0: Standard committed memory
+    MEM_LARGE_PAGES,                        // 1: Large page allocation (if supported)
+    MEM_COMMIT,                             // 2: Committed memory only
+    MEM_RESERVE,                            // 3: Reserved memory (uncommitted)
+    MEM_TOP_DOWN,                           // 4: Allocate from highest address
+    MEM_WRITE_WATCH,                        // 5: Write-watched memory pages
+    MEM_COMMIT | MEM_TOP_DOWN,              // 6: Committed with top-down allocation
+    MEM_RESERVE | MEM_TOP_DOWN,             // 7: Reserved with top-down allocation
+    MEM_PHYSICAL,                           // 8: Physical memory mapping
+    MEM_RESET,                              // 9: Reset memory (discards data)
+    MEM_RESET_UNDO,                         // 10: Undo memory reset
+    MEM_LARGE_PAGES | MEM_COMMIT,           // 11: Large Pages with Commit
+    MEM_MAPPED,                             // 12: Mapped memory
+    MEM_PRIVATE,                            // 13: Private memory allocation
+    MEM_COMMIT | MEM_LARGE_PAGES,           // 14: Large Pages with Commit (alt)
     MEM_COMMIT | MEM_RESERVE | MEM_TOP_DOWN // 15: Fully committed, reserved, top-down
 };
-//Ignoring this as for now (just hope it's not being used and it's not useful.)
-__int64 NlsUpdateLocale_X() {
+// Ignoring this as for now (just hope it's not being used and it's not useful.)
+__int64 NlsUpdateLocale_X()
+{
     return 0();
 }
 
-void WakeByAddressSingle_X(PVOID Address) {
+void WakeByAddressSingle_X(PVOID Address)
+{
     WakeByAddressSingle(Address);
 }
 
-void WakeByAddressAll_X(PVOID Address) {
+void WakeByAddressAll_X(PVOID Address)
+{
     WakeByAddressAll(Address);
 }
 
-BOOL __stdcall WaitOnAddress_X(volatile void* Address, PVOID CompareAddress, SIZE_T AddressSize, DWORD dwMilliseconds)
+BOOL __stdcall WaitOnAddress_X(volatile void *Address, PVOID CompareAddress, SIZE_T AddressSize, DWORD dwMilliseconds)
 {
     return WaitOnAddress(Address, CompareAddress, AddressSize, dwMilliseconds);
 }
-BOOL JobTitleMemoryStatus_X(void* pJob, LPTITLEMEMORYSTATUS Buffer) {
+BOOL JobTitleMemoryStatus_X(void *pJob, LPTITLEMEMORYSTATUS Buffer)
+{
     __int64 jobInfo[7]; // Buffer to store job object memory information
     NTSTATUS status;
     // Validate input parameters
-    if (!pJob || !Buffer || Buffer->dwLength != sizeof(TITLEMEMORYSTATUS)) {
+    if (!pJob || !Buffer || Buffer->dwLength != sizeof(TITLEMEMORYSTATUS))
+    {
         SetLastError(ERROR_INVALID_PARAMETER);
         return FALSE;
     }
 
     // Query job memory information
-    status = QueryInformationJobObject(pJob, (JOBOBJECTINFOCLASS)(JobObjectGroupInformation | 0x10), jobInfo, JOB_INFO_SIZE, NULL);
-    if (status < 0) {
+    status = QueryInformationJobObject(pJob, (JOBOBJECTINFOCLASS)(JobObjectGroupInformation | 0x10), jobInfo,
+                                       JOB_INFO_SIZE, NULL);
+    if (status < 0)
+    {
         RtlSetLastWin32ErrorAndNtStatusFromNtStatus(status);
         return FALSE;
     }
@@ -121,7 +127,7 @@ bool SetThreadpoolAffinityMask_X()
     return true;
 }
 
-BOOL SetThreadName_X(HANDLE hThread, const WCHAR* lpThreadName)
+BOOL SetThreadName_X(HANDLE hThread, const WCHAR *lpThreadName)
 {
     UNICODE_STRING DestinationString;
 
@@ -134,8 +140,8 @@ BOOL SetThreadName_X(HANDLE hThread, const WCHAR* lpThreadName)
 
 void QueryProcessorSchedulingStatistics_X(PPROCESSOR_SCHEDULING_STATISTICS ProcessorSchedulingStatistics)
 {
-    LARGE_INTEGER frequency = { 0 };
-    LARGE_INTEGER counter = { 0 };
+    LARGE_INTEGER frequency = {0};
+    LARGE_INTEGER counter = {0};
 
     // Query the performance frequency and counter
     QueryPerformanceFrequency(&frequency);
@@ -145,21 +151,20 @@ void QueryProcessorSchedulingStatistics_X(PPROCESSOR_SCHEDULING_STATISTICS Proce
     ProcessorSchedulingStatistics->GlobalTime = counter.QuadPart / (frequency.QuadPart / 10000000);
 
     // Use the CPUID instruction
-    int cpuInfo[4] = { 0 }; // {EAX, EBX, ECX, EDX}
+    int cpuInfo[4] = {0}; // {EAX, EBX, ECX, EDX}
     __cpuid(cpuInfo, 0);  // This gets the highest function supported by CPUID
 
     // Combine RBX and RAX as a 64-bit value and store in *a1
-    ProcessorSchedulingStatistics->RunningTime = __ull_rshift(cpuInfo[1], cpuInfo[0]);  // EBX (RBX), EAX (RAX)
+    ProcessorSchedulingStatistics->RunningTime = __ull_rshift(cpuInfo[1], cpuInfo[0]); // EBX (RBX), EAX (RAX)
 
     // Combine RDX and RCX as a 64-bit value and store in a1[1]
     ProcessorSchedulingStatistics->IdleTime = __ull_rshift(cpuInfo[3], cpuInfo[2]); // EDX (RDX), ECX (RCX)
 }
 
-
-BOOL GetThreadName_X(HANDLE hThread, PWSTR lpThreadName, SIZE_T nBufferLength, SIZE_T* pnRequiredLength)
+BOOL GetThreadName_X(HANDLE hThread, PWSTR lpThreadName, SIZE_T nBufferLength, SIZE_T *pnRequiredLength)
 {
-    ULONG v11; // ebx
-    NTSTATUS iError; // edi
+    ULONG v11;          // ebx
+    NTSTATUS iError;    // edi
     ULONG ReturnLength; // [rsp+78h] [rbp+20h] BYREF
 
     if (!pnRequiredLength)
@@ -182,7 +187,8 @@ BOOL GetThreadName_X(HANDLE hThread, PWSTR lpThreadName, SIZE_T nBufferLength, S
             return FALSE;
         }
         iError = NtQueryInformationThread(hThread, ThreadNameInformation, lpData, v11, &ReturnLength);
-        if (iError != STATUS_INFO_LENGTH_MISMATCH && iError != STATUS_BUFFER_TOO_SMALL && iError != STATUS_BUFFER_OVERFLOW)
+        if (iError != STATUS_INFO_LENGTH_MISMATCH && iError != STATUS_BUFFER_TOO_SMALL &&
+            iError != STATUS_BUFFER_OVERFLOW)
             break;
         v11 = ReturnLength;
     }
@@ -211,13 +217,14 @@ BOOL GetThreadName_X(HANDLE hThread, PWSTR lpThreadName, SIZE_T nBufferLength, S
     return TRUE;
 }
 
-void GetSystemOSVersion_X(LPSYSTEMOSVERSIONINFO VersionInformation) {
+void GetSystemOSVersion_X(LPSYSTEMOSVERSIONINFO VersionInformation)
+{
     if (!VersionInformation)
     {
         return;
     }
 
-    int cpuInfo[4] = { -1 };
+    int cpuInfo[4] = {-1};
 
     // @Patoke note: the XBOX passes 0x4000000D for its default hypervisor, we're not running a hypervisor
     // Execute CPUID with EAX = 1
@@ -227,19 +234,20 @@ void GetSystemOSVersion_X(LPSYSTEMOSVERSIONINFO VersionInformation) {
     int ebx = cpuInfo[1];
     int edx = cpuInfo[3];
 
-    VersionInformation->MajorVersion = LOBYTE(ebx);             // Lowest 8 bits of EBX
-    VersionInformation->MinorVersion = HIBYTE(HIWORD(eax));     // Highest 8 bits of EAX
+    VersionInformation->MajorVersion = LOBYTE(ebx);         // Lowest 8 bits of EBX
+    VersionInformation->MinorVersion = HIBYTE(HIWORD(eax)); // Highest 8 bits of EAX
 
-    VersionInformation->Revision = LOWORD(edx);                 // Lowest 16 bits of EDX
-    VersionInformation->BuildNumber = LOWORD(eax);              // Lowest 16 bits of EAX     
+    VersionInformation->Revision = LOWORD(edx);    // Lowest 16 bits of EDX
+    VersionInformation->BuildNumber = LOWORD(eax); // Lowest 16 bits of EAX
 }
 
-
-CONSOLE_TYPE GetConsoleType_X() {
+CONSOLE_TYPE GetConsoleType_X()
+{
     return CONSOLE_TYPE::CONSOLE_TYPE_XBOX_ONE_X_DEVKIT;
 }
 
-PVOID XMemAllocDefault_X(SIZE_T dwSize, uint64_t flags) {
+PVOID XMemAllocDefault_X(SIZE_T dwSize, uint64_t flags)
+{
     PVOID ptr = nullptr;
     // Example flag usage: we assume if the highest bit of flags is set, we zero the memory.
     bool shouldZeroMemory = (flags & (1ULL << 63)) != 0;
@@ -248,37 +256,39 @@ PVOID XMemAllocDefault_X(SIZE_T dwSize, uint64_t flags) {
     ptr = malloc(dwSize);
 
     // Optionally zero out the memory if the flag is set
-    if (ptr && shouldZeroMemory) {
+    if (ptr && shouldZeroMemory)
+    {
         memset(ptr, 0, dwSize);
     }
 
     return ptr;
 }
 
-BOOLEAN __stdcall XMemFreeDefault_X(PVOID pAddress, uint64_t dwAllocAttributes) {
-    
+BOOLEAN __stdcall XMemFreeDefault_X(PVOID pAddress, uint64_t dwAllocAttributes)
+{
+
     free(pAddress);
 
     return TRUE;
 }
 
-
-void XMemFree_X(PVOID pADDRESS, uint64_t dwAllocAttributes) {
+void XMemFree_X(PVOID pADDRESS, uint64_t dwAllocAttributes)
+{
     XMemFreeDefault_X(pADDRESS, dwAllocAttributes);
 }
 
 // Define PVOID for non-Windows environments if needed
 #ifndef _WINDEF_
-typedef void* PVOID;
+typedef void *PVOID;
 #endif
 
-
-
-PVOID XMemAlloc_X(SIZE_T dwSize, uint64_t flags) {
+PVOID XMemAlloc_X(SIZE_T dwSize, uint64_t flags)
+{
     return XMemAllocDefault_X(dwSize, flags);
 }
 
-NTSTATUS __fastcall XMemSetAllocationHooks_X(PVOID(__fastcall* XMemAlloc)(SIZE_T, uint64_t), BOOLEAN(__stdcall* XMemFree)(PVOID, uint64_t))
+NTSTATUS __fastcall XMemSetAllocationHooks_X(PVOID(__fastcall *XMemAlloc)(SIZE_T, uint64_t),
+                                             BOOLEAN(__stdcall *XMemFree)(PVOID, uint64_t))
 {
     // Enter critical section using direct WinAPI
     EnterCriticalSection((LPCRITICAL_SECTION)&XmpAllocationHookLock);
@@ -302,13 +312,17 @@ NTSTATUS __fastcall XMemSetAllocationHooks_X(PVOID(__fastcall* XMemAlloc)(SIZE_T
     return STATUS_SUCCESS;
 }
 
-#define PROTECT_FLAGS_MASK (PAGE_EXECUTE | PAGE_EXECUTE_READ | PAGE_EXECUTE_READWRITE | PAGE_EXECUTE_WRITECOPY | PAGE_NOACCESS | PAGE_READONLY | PAGE_READWRITE | PAGE_WRITECOPY | PAGE_GUARD | PAGE_NOCACHE)
-#define ALLOCATION_FLAGS_MASK (MEM_COMMIT | MEM_RESERVE | MEM_RESET | MEM_LARGE_PAGES | MEM_PHYSICAL | MEM_TOP_DOWN | MEM_WRITE_WATCH)
+#define PROTECT_FLAGS_MASK                                                                                             \
+    (PAGE_EXECUTE | PAGE_EXECUTE_READ | PAGE_EXECUTE_READWRITE | PAGE_EXECUTE_WRITECOPY | PAGE_NOACCESS |              \
+     PAGE_READONLY | PAGE_READWRITE | PAGE_WRITECOPY | PAGE_GUARD | PAGE_NOCACHE)
+#define ALLOCATION_FLAGS_MASK                                                                                          \
+    (MEM_COMMIT | MEM_RESERVE | MEM_RESET | MEM_LARGE_PAGES | MEM_PHYSICAL | MEM_TOP_DOWN | MEM_WRITE_WATCH)
 
 #define PROTECT_FLAGS_MASK 0xFF
 #define ALLOCATION_FLAGS_MASK 0xFFFFF
 
-bool EnableDebugPrivilege() {
+bool EnableDebugPrivilege()
+{
     HANDLE hToken;
     TOKEN_PRIVILEGES tp;
     LUID luid;
@@ -322,7 +336,8 @@ bool EnableDebugPrivilege() {
     tp.Privileges[0].Luid = luid;
     tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
 
-    if (!AdjustTokenPrivileges(hToken, FALSE, &tp, sizeof(tp), NULL, NULL)) {
+    if (!AdjustTokenPrivileges(hToken, FALSE, &tp, sizeof(tp), NULL, NULL))
+    {
         CloseHandle(hToken);
         return false;
     }
@@ -339,21 +354,26 @@ LPVOID VirtualAllocEx_X(HANDLE hProcess, LPVOID lpAddress, SIZE_T dwSize, DWORD 
     printf("VirtualAllocEx_X: %p, %zu, %x, %x\n", lpAddress, dwSize, flAllocationType, flProtect);
 
     LPVOID ret = VirtualAllocEx(hProcess, lpAddress, dwSize, flAllocationType, flProtect);
-    if (!ret) {
+    if (!ret)
+    {
         DWORD err = GetLastError();
         printf("VirtualAllocEx failed with error %lu\n", err);
 
-        if (err == ERROR_PRIVILEGE_NOT_HELD) {
+        if (err == ERROR_PRIVILEGE_NOT_HELD)
+        {
             printf("VirtualAllocEx failed due to missing privileges (SeDebugPrivilege).\n");
         }
 
         // Fallback only if allocating into self
-        if (hProcess == GetCurrentProcess() || hProcess == NULL) {
+        if (hProcess == GetCurrentProcess() || hProcess == NULL)
+        {
             printf("Attempting fallback with VirtualAlloc...\n");
 
-            if ((flAllocationType & (MEM_RESERVE | MEM_COMMIT)) != 0) {
+            if ((flAllocationType & (MEM_RESERVE | MEM_COMMIT)) != 0)
+            {
                 ret = VirtualAlloc(lpAddress, dwSize, flAllocationType, flProtect);
-                if (!ret) {
+                if (!ret)
+                {
                     DWORD fallbackErr = GetLastError();
                     printf("VirtualAlloc fallback also failed: %lu\n", fallbackErr);
                 }
@@ -362,20 +382,15 @@ LPVOID VirtualAllocEx_X(HANDLE hProcess, LPVOID lpAddress, SIZE_T dwSize, DWORD 
     }
 
     // Final safety: log if still null
-    if (!ret) {
+    if (!ret)
+    {
         printf("VirtualAllocEx_X ultimately failed to allocate %zu bytes.\n", dwSize);
     }
 
     return ret;
 }
 
-
-LPVOID VirtualAlloc_X(
-    LPVOID lpAddress,
-    SIZE_T dwSize,
-    DWORD  flAllocationType,
-    DWORD  flProtect
-)
+LPVOID VirtualAlloc_X(LPVOID lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect)
 {
     return VirtualAllocEx_X(GetCurrentProcess(), lpAddress, dwSize, flAllocationType, flProtect);
 }
@@ -414,12 +429,8 @@ BOOL TitleMemoryStatus_X(LPTITLEMEMORYSTATUS Buffer)
         return false;
     }
 
-    NTSTATUS Status = NtQueryInformationProcess(
-        (HANDLE)0xFFFFFFFFFFFFFFFFi64,
-        (PROCESSINFOCLASS)(0x3A | 0x3A),
-        ProcessInformation,
-        0x48u,
-        0i64);
+    NTSTATUS Status = NtQueryInformationProcess((HANDLE)0xFFFFFFFFFFFFFFFFi64, (PROCESSINFOCLASS)(0x3A | 0x3A),
+                                                ProcessInformation, 0x48u, 0i64);
 
     if (!NT_SUCCESS(Status))
     {
@@ -441,7 +452,7 @@ BOOL TitleMemoryStatus_X(LPTITLEMEMORYSTATUS Buffer)
     //*(DWORD*)((uint8_t*)Buffer + 72) = ProcessInformation[8];
 
     // equivalent to the previous code
-    auto* nextBuffer = Buffer++;
+    auto *nextBuffer = Buffer++;
     nextBuffer->dwLength = ProcessInformation[7];
     nextBuffer->dwReserved = ProcessInformation[8];
 

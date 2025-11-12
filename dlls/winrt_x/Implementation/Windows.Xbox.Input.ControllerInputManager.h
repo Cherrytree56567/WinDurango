@@ -3,16 +3,16 @@
 
 namespace winrt::Windows::Xbox::Input::implementation
 {
-    struct ControllerInputManager : ControllerInputManagerT<ControllerInputManager>
-    {
-        ControllerInputManager() = default;
+struct ControllerInputManager : ControllerInputManagerT<ControllerInputManager>
+{
+    ControllerInputManager() = default;
 
-        winrt::Windows::Xbox::Input::IController GetControllerFromIndex(uint32_t index);
-    };
-}
+    winrt::Windows::Xbox::Input::IController GetControllerFromIndex(uint32_t index);
+};
+} // namespace winrt::Windows::Xbox::Input::implementation
 namespace winrt::Windows::Xbox::Input::factory_implementation
 {
-    struct ControllerInputManager : ControllerInputManagerT<ControllerInputManager, implementation::ControllerInputManager>
-    {
-    };
-}
+struct ControllerInputManager : ControllerInputManagerT<ControllerInputManager, implementation::ControllerInputManager>
+{
+};
+} // namespace winrt::Windows::Xbox::Input::factory_implementation

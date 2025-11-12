@@ -1,8 +1,9 @@
-#include "pch.h"
 #include "FrameworkViewWrapper.h"
+#include "pch.h"
 #include <winrt/Windows.Foundation.h>
 
-HRESULT __stdcall FrameworkViewWrapper::Initialize(ABI::Windows::ApplicationModel::Core::ICoreApplicationView* applicationView)
+HRESULT __stdcall FrameworkViewWrapper::Initialize(
+    ABI::Windows::ApplicationModel::Core::ICoreApplicationView *applicationView)
 {
     if (!m_realView)
     {
@@ -18,7 +19,7 @@ HRESULT __stdcall FrameworkViewWrapper::Initialize(ABI::Windows::ApplicationMode
     return hr;
 }
 
-HRESULT __stdcall FrameworkViewWrapper::SetWindow(ABI::Windows::UI::Core::ICoreWindow* window)
+HRESULT __stdcall FrameworkViewWrapper::SetWindow(ABI::Windows::UI::Core::ICoreWindow *window)
 {
     if (!m_realView)
     {
@@ -33,8 +34,8 @@ HRESULT __stdcall FrameworkViewWrapper::SetWindow(ABI::Windows::UI::Core::ICoreW
     }
 
     // Wrap the CoreWindow with Xbox CoreWindow wrapper
-    ICoreWindow* wrappedWindow = reinterpret_cast<ICoreWindow*>(
-        new (std::nothrow) CoreWindowWrapperX(reinterpret_cast<CoreWindow*>(window)));
+    ICoreWindow *wrappedWindow =
+        reinterpret_cast<ICoreWindow *>(new (std::nothrow) CoreWindowWrapperX(reinterpret_cast<CoreWindow *>(window)));
 
     if (!wrappedWindow)
     {
@@ -96,13 +97,12 @@ HRESULT __stdcall FrameworkViewWrapper::Run()
 
         return hr;
     }
-    catch (winrt::hresult_error const& ex)
+    catch (winrt::hresult_error const &ex)
     {
-        wprintf(L"winrt::hresult_error caught in Run: HRESULT=0x%08X, Message=%s\n",
-            ex.code(), ex.message().c_str());
+        wprintf(L"winrt::hresult_error caught in Run: HRESULT=0x%08X, Message=%s\n", ex.code(), ex.message().c_str());
         return ex.code();
     }
-    catch (std::exception const& ex)
+    catch (std::exception const &ex)
     {
         wprintf(L"std::exception caught in Run: %S\n", ex.what());
         return E_FAIL;
@@ -130,7 +130,7 @@ HRESULT __stdcall FrameworkViewWrapper::Uninitialize(void)
     return hr;
 }
 
-HRESULT FrameworkViewWrapper::QueryInterface(const IID& riid, void** ppvObject)
+HRESULT FrameworkViewWrapper::QueryInterface(const IID &riid, void **ppvObject)
 {
     if (!ppvObject)
     {
@@ -147,12 +147,10 @@ HRESULT FrameworkViewWrapper::QueryInterface(const IID& riid, void** ppvObject)
     }
 
     // Check for interfaces we implement directly
-    if (riid == __uuidof(IFrameworkView) ||
-        riid == __uuidof(ICoreApplicationExit) ||
-        riid == __uuidof(IUnknown) ||
+    if (riid == __uuidof(IFrameworkView) || riid == __uuidof(ICoreApplicationExit) || riid == __uuidof(IUnknown) ||
         riid == __uuidof(IInspectable))
     {
-        *ppvObject = static_cast<IFrameworkView*>(this);
+        *ppvObject = static_cast<IFrameworkView *>(this);
         AddRef();
         return S_OK;
     }
@@ -187,7 +185,7 @@ ULONG FrameworkViewWrapper::Release()
     return refCount;
 }
 
-HRESULT FrameworkViewWrapper::GetIids(ULONG* iidCount, IID** iids)
+HRESULT FrameworkViewWrapper::GetIids(ULONG *iidCount, IID **iids)
 {
     if (!iidCount || !iids)
     {
@@ -203,7 +201,7 @@ HRESULT FrameworkViewWrapper::GetIids(ULONG* iidCount, IID** iids)
     return m_realView->GetIids(iidCount, iids);
 }
 
-HRESULT FrameworkViewWrapper::GetRuntimeClassName(HSTRING* className)
+HRESULT FrameworkViewWrapper::GetRuntimeClassName(HSTRING *className)
 {
     if (!className)
     {
@@ -219,7 +217,7 @@ HRESULT FrameworkViewWrapper::GetRuntimeClassName(HSTRING* className)
     return m_realView->GetRuntimeClassName(className);
 }
 
-HRESULT FrameworkViewWrapper::GetTrustLevel(TrustLevel* trustLevel)
+HRESULT FrameworkViewWrapper::GetTrustLevel(TrustLevel *trustLevel)
 {
     if (!trustLevel)
     {
