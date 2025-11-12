@@ -3,11 +3,11 @@
 
 namespace winrt::Windows::Xbox::Multiplayer::implementation
 {
-struct MatchStatusChangedEventArgs : MatchStatusChangedEventArgsT<MatchStatusChangedEventArgs>
-{
-    MatchStatusChangedEventArgs() = default;
+    struct MatchStatusChangedEventArgs : MatchStatusChangedEventArgsT<MatchStatusChangedEventArgs>
+    {
+        MatchStatusChangedEventArgs() = default;
 
-    winrt::Windows::Xbox::Multiplayer::MultiplayerSessionReference MatchSession();
-    winrt::Windows::Xbox::Multiplayer::MatchStatus MatchStatus();
-};
-} // namespace winrt::Windows::Xbox::Multiplayer::implementation
+        winrt::Windows::Xbox::Multiplayer::MultiplayerSessionReference MatchSession();
+        winrt::Windows::Xbox::Multiplayer::MatchStatus MatchStatus();
+    };
+}

@@ -3,16 +3,16 @@
 
 namespace winrt::Windows::Xbox::Chat::implementation
 {
-struct ChatUserCorrelation : ChatUserCorrelationT<ChatUserCorrelation>
-{
-    ChatUserCorrelation() = default;
+    struct ChatUserCorrelation : ChatUserCorrelationT<ChatUserCorrelation>
+    {
+        ChatUserCorrelation() = default;
 
-    winrt::Windows::Xbox::System::IUser User();
-};
-} // namespace winrt::Windows::Xbox::Chat::implementation
+        winrt::Windows::Xbox::System::IUser User();
+    };
+}
 namespace winrt::Windows::Xbox::Chat::factory_implementation
 {
-struct ChatUserCorrelation : ChatUserCorrelationT<ChatUserCorrelation, implementation::ChatUserCorrelation>
-{
-};
-} // namespace winrt::Windows::Xbox::Chat::factory_implementation
+    struct ChatUserCorrelation : ChatUserCorrelationT<ChatUserCorrelation, implementation::ChatUserCorrelation>
+    {
+    };
+}

@@ -3,20 +3,18 @@
 
 namespace winrt::Windows::Xbox::System::implementation
 {
-struct UserDisplayInfo : UserDisplayInfoT<UserDisplayInfo>
-{
-    UserDisplayInfo() = default;
-    UserDisplayInfo(hstring gamertag) : wdcfg(WinDurangoConfig::Instance())
-    {
-    }
+	struct UserDisplayInfo : UserDisplayInfoT<UserDisplayInfo>
+	{
+		UserDisplayInfo() = default;
+		UserDisplayInfo(hstring gamertag) : wdcfg(WinDurangoConfig::Instance()) {}
 
-    hstring Gamertag();
-    uint32_t GamerScore();
-    hstring ApplicationDisplayName();
-    hstring GameDisplayName();
-    int32_t Reputation();
-    UserAgeGroup AgeGroup();
-    Foundation::Collections::IVectorView<uint32_t> Privileges();
-    WinDurangoConfig &wdcfg;
-};
-} // namespace winrt::Windows::Xbox::System::implementation
+		hstring Gamertag();
+		uint32_t GamerScore();
+		hstring ApplicationDisplayName();
+		hstring GameDisplayName();
+		int32_t Reputation();
+		UserAgeGroup AgeGroup();
+		Foundation::Collections::IVectorView<uint32_t> Privileges();
+		WinDurangoConfig& wdcfg;
+	};
+}

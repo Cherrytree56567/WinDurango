@@ -1,22 +1,20 @@
+#include "pch.h"
 #include "Microsoft.Xbox.Services.Presence.DevicePresenceChangeEventArgs.h"
 #include "Microsoft.Xbox.Services.Presence.DevicePresenceChangeEventArgs.g.cpp"
-#include "pch.h"
+
 
 namespace winrt::Microsoft::Xbox::Services::Presence::implementation
 {
-hstring DevicePresenceChangeEventArgs::XboxUserId()
-{
-    LOG_NOT_IMPLEMENTED();
-    throw hresult_not_implemented();
+    hstring DevicePresenceChangeEventArgs::XboxUserId()
+    {
+        LOG_NOT_IMPLEMENTED(); throw hresult_not_implemented();
+    }
+    winrt::Microsoft::Xbox::Services::Presence::PresenceDeviceType DevicePresenceChangeEventArgs::DeviceType()
+    {
+        LOG_NOT_IMPLEMENTED(); throw hresult_not_implemented();
+    }
+    bool DevicePresenceChangeEventArgs::IsUserLoggedOnDevice()
+    {
+        LOG_NOT_IMPLEMENTED(); throw hresult_not_implemented();
+    }
 }
-winrt::Microsoft::Xbox::Services::Presence::PresenceDeviceType DevicePresenceChangeEventArgs::DeviceType()
-{
-    LOG_NOT_IMPLEMENTED();
-    throw hresult_not_implemented();
-}
-bool DevicePresenceChangeEventArgs::IsUserLoggedOnDevice()
-{
-    LOG_NOT_IMPLEMENTED();
-    throw hresult_not_implemented();
-}
-} // namespace winrt::Microsoft::Xbox::Services::Presence::implementation

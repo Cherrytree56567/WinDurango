@@ -3,11 +3,10 @@
 
 namespace winrt::Microsoft::Xbox::GameChat::implementation
 {
-struct AccessibilitySettingsChangedEventArgs
-    : AccessibilitySettingsChangedEventArgsT<AccessibilitySettingsChangedEventArgs>
-{
-    AccessibilitySettingsChangedEventArgs() = default;
+    struct AccessibilitySettingsChangedEventArgs : AccessibilitySettingsChangedEventArgsT<AccessibilitySettingsChangedEventArgs>
+    {
+        AccessibilitySettingsChangedEventArgs() = default;
 
-    winrt::Microsoft::Xbox::GameChat::ChatUser ChatUser();
-};
-} // namespace winrt::Microsoft::Xbox::GameChat::implementation
+        winrt::Microsoft::Xbox::GameChat::ChatUser ChatUser();
+    };
+}

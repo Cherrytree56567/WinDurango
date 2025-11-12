@@ -3,11 +3,11 @@
 
 namespace winrt::Microsoft::Xbox::GameChat::implementation
 {
-struct ChannelUpdatedEventArgs : ChannelUpdatedEventArgsT<ChannelUpdatedEventArgs>
-{
-    ChannelUpdatedEventArgs() = default;
+    struct ChannelUpdatedEventArgs : ChannelUpdatedEventArgsT<ChannelUpdatedEventArgs>
+    {
+        ChannelUpdatedEventArgs() = default;
 
-    winrt::Microsoft::Xbox::GameChat::ChatUser ChatUser();
-    uint8_t Channel();
-};
-} // namespace winrt::Microsoft::Xbox::GameChat::implementation
+        winrt::Microsoft::Xbox::GameChat::ChatUser ChatUser();
+        uint8_t Channel();
+    };
+}

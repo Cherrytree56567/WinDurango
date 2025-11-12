@@ -3,10 +3,10 @@
 
 namespace winrt::Windows::Xbox::SmartGlass::implementation
 {
-struct SmartGlassMessageReceivedEventArgs : SmartGlassMessageReceivedEventArgsT<SmartGlassMessageReceivedEventArgs>
-{
-    SmartGlassMessageReceivedEventArgs() = default;
+    struct SmartGlassMessageReceivedEventArgs : SmartGlassMessageReceivedEventArgsT<SmartGlassMessageReceivedEventArgs>
+    {
+        SmartGlassMessageReceivedEventArgs() = default;
 
-    hstring Message();
-};
-} // namespace winrt::Windows::Xbox::SmartGlass::implementation
+        hstring Message();
+    };
+}

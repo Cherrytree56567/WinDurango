@@ -29,11 +29,10 @@ If you do not agree to these terms, you do not have permission to use this code.
 #endif
 
 // This class is exported from the dll
-class XGX_API Cxgx
-{
-  public:
-    Cxgx(void);
-    // TODO: add your methods here.
+class XGX_API Cxgx {
+public:
+	Cxgx(void);
+	// TODO: add your methods here.
 };
 
 extern XGX_API int nxgx;

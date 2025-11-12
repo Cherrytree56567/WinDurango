@@ -3,11 +3,11 @@
 
 namespace winrt::Windows::Xbox::Multiplayer::implementation
 {
-struct UserPartyAssociation : UserPartyAssociationT<UserPartyAssociation>
-{
-    UserPartyAssociation() = default;
+    struct UserPartyAssociation : UserPartyAssociationT<UserPartyAssociation>
+    {
+        UserPartyAssociation() = default;
 
-    winrt::Windows::Foundation::Collections::IVectorView<hstring> QueriedXboxUserIds();
-    hstring PartyId();
-};
-} // namespace winrt::Windows::Xbox::Multiplayer::implementation
+        winrt::Windows::Foundation::Collections::IVectorView<hstring> QueriedXboxUserIds();
+        hstring PartyId();
+    };
+}

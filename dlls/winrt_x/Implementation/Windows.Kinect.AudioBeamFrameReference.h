@@ -3,11 +3,11 @@
 
 namespace winrt::Windows::Kinect::implementation
 {
-struct AudioBeamFrameReference : AudioBeamFrameReferenceT<AudioBeamFrameReference>
-{
-    AudioBeamFrameReference() = default;
+    struct AudioBeamFrameReference : AudioBeamFrameReferenceT<AudioBeamFrameReference>
+    {
+        AudioBeamFrameReference() = default;
 
-    winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Kinect::AudioBeamFrame> AcquireBeamFrames();
-    winrt::Windows::Foundation::TimeSpan RelativeTime();
-};
-} // namespace winrt::Windows::Kinect::implementation
+        winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Kinect::AudioBeamFrame> AcquireBeamFrames();
+        winrt::Windows::Foundation::TimeSpan RelativeTime();
+    };
+}
