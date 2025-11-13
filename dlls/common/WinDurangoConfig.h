@@ -1,12 +1,14 @@
 #pragma once
 #include "toml.hpp"
 #include <locale>
-#include <codecvt>
+#include <Windows.h>
+#include <string>
 #include <filesystem>
+#include <winrt/base.h>
 
 struct WinDurangoConfigData
 {
-	std::string gamertag{ "TheDurangler" };
+	std::string gamertag{ "TheDurangler4" };
 	int gamerscore{ 0 };
 	int reputation{ 0 };
 	enum class AgeGroup
@@ -46,6 +48,7 @@ struct WinDurangoConfigData
 	std::string MouseStick = "Right";
 	bool invertedHotBar = false; // Only applies if the game is Minecraft
 	bool experimental = false;
+	bool logging = true;
 };
 
 class WinDurangoConfig

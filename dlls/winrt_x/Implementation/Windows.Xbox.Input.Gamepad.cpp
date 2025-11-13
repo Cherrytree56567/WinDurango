@@ -320,28 +320,10 @@ namespace winrt::Windows::Xbox::Input::implementation
         deltasumX = 0.0f;
         deltasumY = 0.0f;
 
-<<<<<<< Updated upstream
-        if (currNeed != 0) {
-<<<<<<< Updated upstream
-            if (currNeed > 0) {
-                reading.Buttons |= GamepadButtons::RightShoulder;
-                currNeed--;
-=======
-            if (!isCtrl) {
-                isCtrl = true;
-                if (currNeed > 0) {
-                    reading.Buttons |= GamepadButtons::RightShoulder;
-                }
-                else if (currNeed < 0) {
-                    reading.Buttons |= GamepadButtons::LeftShoulder;
-                }
-=======
         if (wdcfg.GetData().invertedHotBar && currNeed != 0 && wdcfg.GetData().game == WinDurangoConfigData::Game::Minecraft) {
             if (currNeed > 0) {
                 reading.Buttons |= GamepadButtons::RightShoulder;
                 currNeed--;
->>>>>>> Stashed changes
->>>>>>> Stashed changes
             }
             else if (currNeed < 0) {
                 reading.Buttons |= GamepadButtons::LeftShoulder;

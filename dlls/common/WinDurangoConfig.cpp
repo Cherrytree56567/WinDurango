@@ -20,6 +20,22 @@ void WinDurangoConfig::SetData(const WinDurangoConfigData& data)
 	_data = data;
 }
 
+std::string WStringToUTF8(const std::wstring& wstr) {
+	if (wstr.empty( )) return {};
+	int size_needed = WideCharToMultiByte(CP_UTF8, 0, wstr.data( ), (int) wstr.size( ), nullptr, 0, nullptr, nullptr);
+	std::string str(size_needed, 0);
+	WideCharToMultiByte(CP_UTF8, 0, wstr.data( ), (int) wstr.size( ), str.data( ), size_needed, nullptr, nullptr);
+	return str;
+}
+
+std::wstring UTF8ToWString(const std::string& str) {
+	if (str.empty( )) return {};
+	int size_needed = MultiByteToWideChar(CP_UTF8, 0, str.data( ), (int) str.size( ), nullptr, 0);
+	std::wstring wstr(size_needed, 0);
+	MultiByteToWideChar(CP_UTF8, 0, str.data( ), (int) str.size( ), wstr.data( ), size_needed);
+	return wstr;
+}
+
 using namespace std::string_view_literals;
 
 void WinDurangoConfig::ProcessConfigFile()
@@ -57,6 +73,7 @@ MovementStick = "Left"
 MouseStick = "Right"
 invertedHotBar = false
 experimental = false
+logging = true
 	)"sv;
 
 	try
@@ -75,8 +92,7 @@ experimental = false
 				.CreateFileAsync(L"config.toml", winrt::Windows::Storage::CreationCollisionOption::ReplaceExisting)
 				.get();
 
-			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-			std::wstring wide = converter.from_bytes(std::string(default_config_data));
+			std::wstring wide = UTF8ToWString(default_config_data.data());
 			winrt::Windows::Storage::FileIO::WriteTextAsync(file, wide).get();
 		}
 
@@ -117,6 +133,7 @@ experimental = false
 		auto mousestick_opt = tbl["KeyboardMapping"]["MouseStick"].value<std::string_view>();
 		auto invHot_opt = tbl["KeyboardMapping"]["invertedHotBar"].value<bool>();
 		auto exp_opt = tbl["KeyboardMapping"]["experimental"].value<bool>();
+		auto log_opt = tbl["KeyboardMapping"]["logging"].value<bool>();
 
 		const WinDurangoConfigData data
 		{
@@ -160,13 +177,13 @@ experimental = false
 			.MouseStick = std::string(mousestick_opt.value_or("right")),
 			.invertedHotBar = invHot_opt.value_or(false),
 			.experimental = exp_opt.value_or(false),
+			.logging = log_opt.value_or(true),
 		};
 
 		SetData(data);
 	}
 	catch (const toml::parse_error& err)
 	{
-		LOG_INFO("WinDurangoConfig || Parsing failed: %s\n", err);
 		const WinDurangoConfigData data
 		{
 			.gamertag = std::string("TheDurangler4"),
@@ -196,6 +213,8 @@ experimental = false
 			.MovementStick = "left",
 			.MouseStick = "right",
 			.invertedHotBar = false,
+			.experimental = false,
+			.logging = true,
 		};
 		SetData(data);
 	}
@@ -204,4 +223,9 @@ experimental = false
 WinDurangoConfig::WinDurangoConfig()
 {
 	ProcessConfigFile();
+}
+
+bool GetLoggingCfg()
+{
+	return WinDurangoConfig::Instance().GetData().logging;
 }

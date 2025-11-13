@@ -556,6 +556,9 @@
     <ClInclude Include="WinDurangoConfig.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\common\WinDurangoConfig.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="ConnectedStorage\Windows.Xbox.Storage.ConnectedStorage.cpp" />
     <ClCompile Include="Implementation\Microsoft.Xbox.GameChat.AccessibilitySettingsChangedEventArgs.cpp" />
     <ClCompile Include="Implementation\Microsoft.Xbox.GameChat.ChannelUpdatedEventArgs.cpp" />
@@ -948,7 +951,6 @@
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="WinDurangoConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
