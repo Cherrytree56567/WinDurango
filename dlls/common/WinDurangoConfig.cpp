@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "WinDurangoConfig.h"
 #include <winrt/Windows.Storage.h>
 #include <winrt/Windows.Foundation.h>
@@ -26,42 +25,47 @@ using namespace std::string_view_literals;
 void WinDurangoConfig::ProcessConfigFile()
 {
 	static constexpr auto default_config_data = R"(
-		[WinDurango]
-		Gamertag = "TheDurangler2"
-		Gamerscore = 1500
-		Reputation = 5
-		Game = "Minecraft"
-		AgeGroup = "Adult"
+[WinDurango]
+Gamertag = "TheDurangler4"
+Gamerscore = 1500
+Reputation = 5
+Game = "Minecraft"
+AgeGroup = "Adult"
 		
-		[KeyboardMapping]
-		A = 32
-		B = 81
-		X = 82
-		Y = 69
-		Up = 38
-		Down = 40
-		Left = 37
-		Right = 39
-		Menu = 13
-		View = 27
-		LThumb = 161
-		RThumb = 160
-		LShoulder = 162
-		RShoulder = 163
-		LTrigger = 2
-		RTrigger = 1
-		MovThumbY = 87
-		MovThumbYM = 83
-		MovThumbX = 68
-		MovThumbXM = 65
-		MovementStick = "Left"
-		MouseStick = "Right"
+[KeyboardMapping]
+A = 32
+B = 81
+X = 82
+Y = 69
+Up = 38
+Down = 40
+Left = 37
+Right = 39
+Menu = 13
+View = 27
+LThumb = 161
+RThumb = 160
+LShoulder = 162
+RShoulder = 163
+LTrigger = 2
+RTrigger = 1
+MovThumbY = 87
+MovThumbYM = 83
+MovThumbX = 68
+MovThumbXM = 65
+MovementStick = "Left"
+MouseStick = "Right"
+invertedHotBar = false
+experimental = false
 	)"sv;
 
 	try
 	{
 		/*
 		* We need to use WinRT Storage APIs in UWP
+		* 
+		* btw, this uses .get() which is blocking the thread
+		* TODO: Optimize
 		*/
 		StorageFolder localFolder = ApplicationData::Current().LocalFolder();
 		std::wstring folderPath = std::wstring(localFolder.Path());
@@ -111,6 +115,8 @@ void WinDurangoConfig::ProcessConfigFile()
 		auto movthumbxm_opt = tbl["KeyboardMapping"]["MovThumbXM"].value<int>();
 		auto movstick_opt = tbl["KeyboardMapping"]["MovementStick"].value<std::string_view>();
 		auto mousestick_opt = tbl["KeyboardMapping"]["MouseStick"].value<std::string_view>();
+		auto invHot_opt = tbl["KeyboardMapping"]["invertedHotBar"].value<bool>();
+		auto exp_opt = tbl["KeyboardMapping"]["experimental"].value<bool>();
 
 		const WinDurangoConfigData data
 		{
@@ -152,6 +158,8 @@ void WinDurangoConfig::ProcessConfigFile()
 			.MovementThumbXM = movthumbxm_opt.value_or(65),
 			.MovementStick = std::string(movstick_opt.value_or("left")),
 			.MouseStick = std::string(mousestick_opt.value_or("right")),
+			.invertedHotBar = invHot_opt.value_or(false),
+			.experimental = exp_opt.value_or(false),
 		};
 
 		SetData(data);
@@ -161,7 +169,7 @@ void WinDurangoConfig::ProcessConfigFile()
 		LOG_INFO("WinDurangoConfig || Parsing failed: %s\n", err);
 		const WinDurangoConfigData data
 		{
-			.gamertag = std::string("TheDurangler2"),
+			.gamertag = std::string("TheDurangler4"),
 			.gamerscore = 1500,
 			.reputation = 5,
 			.ageGroup = WinDurangoConfigData::AgeGroup::Unknown,
@@ -187,6 +195,7 @@ void WinDurangoConfig::ProcessConfigFile()
 			.MovementThumbXM = 0,
 			.MovementStick = "left",
 			.MouseStick = "right",
+			.invertedHotBar = false,
 		};
 		SetData(data);
 	}

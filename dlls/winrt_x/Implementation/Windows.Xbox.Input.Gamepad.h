@@ -3,6 +3,7 @@
 #include <Xinput.h>
 #include <windows.h>
 #include <winrt/Windows.UI.Core.h>
+#include "../common/WinDurangoConfig.h"
 
 namespace winrt::Windows::Xbox::Input::implementation
 {

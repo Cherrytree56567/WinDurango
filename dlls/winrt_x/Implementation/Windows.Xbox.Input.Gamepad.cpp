@@ -10,7 +10,6 @@
 #include <Xinput.h>
 #include <iostream>
 #include "Windows.Xbox.System.User.h"
-#include "../WinDurangoConfig.h"
 
 namespace winrt::Windows::Xbox::Input::implementation
 {
@@ -213,10 +212,13 @@ namespace winrt::Windows::Xbox::Input::implementation
 			if (GetAsyncKeyState(keyboardButtons[ i ].first))
 			{
 				reading.Buttons |= keyboardButtons[ i ].second;
-                if (keyboardButtons[i].first == 'V') {
-                    //menuOpened = true;
-                } else if (keyboardButtons[i].first == 'X') {
-                    //menuOpened = false;
+                if (wdcfg.GetData().experimental) {
+                    if (keyboardButtons[i].first == 'V') {
+                        menuOpened = true;
+                    }
+                    else if (keyboardButtons[i].first == 'X') {
+                        menuOpened = false;
+                    }
                 }
             }
             if (GetAsyncKeyState(wdcfg.GetData().MovementThumbY) & 0x8000) {
@@ -318,13 +320,41 @@ namespace winrt::Windows::Xbox::Input::implementation
         deltasumX = 0.0f;
         deltasumY = 0.0f;
 
+<<<<<<< Updated upstream
         if (currNeed != 0) {
+<<<<<<< Updated upstream
             if (currNeed > 0) {
                 reading.Buttons |= GamepadButtons::RightShoulder;
                 currNeed--;
+=======
+            if (!isCtrl) {
+                isCtrl = true;
+                if (currNeed > 0) {
+                    reading.Buttons |= GamepadButtons::RightShoulder;
+                }
+                else if (currNeed < 0) {
+                    reading.Buttons |= GamepadButtons::LeftShoulder;
+                }
+=======
+        if (wdcfg.GetData().invertedHotBar && currNeed != 0 && wdcfg.GetData().game == WinDurangoConfigData::Game::Minecraft) {
+            if (currNeed > 0) {
+                reading.Buttons |= GamepadButtons::RightShoulder;
+                currNeed--;
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
             }
             else if (currNeed < 0) {
                 reading.Buttons |= GamepadButtons::LeftShoulder;
+                currNeed++;
+            }
+        }
+        else if (currNeed != 0 && wdcfg.GetData().game == WinDurangoConfigData::Game::Minecraft) {
+            if (currNeed > 0) {
+                reading.Buttons |= GamepadButtons::LeftShoulder;
+                currNeed--;
+            }
+            else if (currNeed < 0) {
+                reading.Buttons |= GamepadButtons::RightShoulder;
                 currNeed++;
             }
         }
