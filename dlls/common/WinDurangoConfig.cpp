@@ -71,9 +71,11 @@ MovThumbX = 68
 MovThumbXM = 65
 MovementStick = "Left"
 MouseStick = "Right"
-invertedHotBar = false
 experimental = false
 logging = true
+
+[Minecraft]
+invertedHotBar = false
 	)"sv;
 
 	try
@@ -131,7 +133,7 @@ logging = true
 		auto movthumbxm_opt = tbl["KeyboardMapping"]["MovThumbXM"].value<int>();
 		auto movstick_opt = tbl["KeyboardMapping"]["MovementStick"].value<std::string_view>();
 		auto mousestick_opt = tbl["KeyboardMapping"]["MouseStick"].value<std::string_view>();
-		auto invHot_opt = tbl["KeyboardMapping"]["invertedHotBar"].value<bool>();
+		auto invHot_opt = tbl["Minecraft"]["invertedHotBar"].value<bool>();
 		auto exp_opt = tbl["KeyboardMapping"]["experimental"].value<bool>();
 		auto log_opt = tbl["KeyboardMapping"]["logging"].value<bool>();
 
@@ -190,6 +192,7 @@ logging = true
 			.gamerscore = 1500,
 			.reputation = 5,
 			.ageGroup = WinDurangoConfigData::AgeGroup::Unknown,
+			.game = WinDurangoConfigData::Game::Unknown,
 			.A = 0,
 			.B = 0,
 			.X = 0,

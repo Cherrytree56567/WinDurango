@@ -9,8 +9,8 @@
 struct WinDurangoConfigData
 {
 	std::string gamertag{ "TheDurangler4" };
-	int gamerscore{ 0 };
-	int reputation{ 0 };
+	int gamerscore{ 1500 };
+	int reputation{ 5 };
 	enum class AgeGroup
 	{
 		Child,
