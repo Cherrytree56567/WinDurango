@@ -5,7 +5,7 @@
 #include <winrt/Windows.Foundation.h>
 #include <winrt/Windows.Foundation.Collections.h>
 
-#include "../common/WinDurangoConfig.h"
+#include "WinDurangoConfig.h"
 #include "logger.h"
 
 #define LOG_FUNCTION_NAME() printf("[%s]\n", __FUNCSIG__)

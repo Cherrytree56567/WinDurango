@@ -2,6 +2,7 @@
 #include <winrt/Windows.Storage.h>
 #include <winrt/Windows.Foundation.h>
 #include <winrt/base.h>
+#include "logger.h"
 using namespace winrt::Windows::Storage;
 
 WinDurangoConfig& WinDurangoConfig::Instance()
@@ -186,40 +187,7 @@ invertedHotBar = false
 	}
 	catch (const toml::parse_error& err)
 	{
-		const WinDurangoConfigData data
-		{
-			.gamertag = std::string("TheDurangler4"),
-			.gamerscore = 1500,
-			.reputation = 5,
-			.ageGroup = WinDurangoConfigData::AgeGroup::Unknown,
-			.game = WinDurangoConfigData::Game::Unknown,
-			.A = 0,
-			.B = 0,
-			.X = 0,
-			.Y = 0,
-			.Up = 0,
-			.Down = 0,
-			.Left = 0,
-			.Right = 0,
-			.Menu = 0,
-			.View = 0,
-			.LThumb = 0,
-			.RThumb = 0,
-			.LShoulder = 0,
-			.RShoulder = 0,
-			.LTrigger = 0,
-			.RTrigger = 0,
-			.MovementThumbY = 0,
-			.MovementThumbYM = 0,
-			.MovementThumbX = 0,
-			.MovementThumbXM = 0,
-			.MovementStick = "left",
-			.MouseStick = "right",
-			.invertedHotBar = false,
-			.experimental = false,
-			.logging = true,
-		};
-		SetData(data);
+		LOG_ERROR("Couldn't Parse config.toml!!!");
 	}
 }
 
