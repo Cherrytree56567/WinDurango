@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <None Include="Config.toml" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="toml.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -13,13 +10,7 @@
     <ClInclude Include="logfmtxx.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Config.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="common.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WinDurangoConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

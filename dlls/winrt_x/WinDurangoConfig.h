@@ -1,16 +1,12 @@
 #pragma once
-#include "toml.hpp"
-#include <locale>
-#include <Windows.h>
 #include <string>
-#include <filesystem>
-#include <winrt/base.h>
 
 struct WinDurangoConfigData
 {
-	std::string gamertag{ "TheDurangler4" };
+	std::string gamertag{ "TheDurangler1" };
 	int gamerscore{ 1500 };
 	int reputation{ 5 };
+
 	enum class AgeGroup
 	{
 		Child,
@@ -18,34 +14,38 @@ struct WinDurangoConfigData
 		Adult,
 		Unknown
 	} ageGroup{ AgeGroup::Unknown };
+
 	enum class Game
 	{
 		Minecraft,
 		Forza_Horizon_2,
 		Unknown
 	} game{ Game::Unknown };
-	int A = 0;
-	int B = 0;
-	int X = 0;
-	int Y = 0;
-	int Up = 0;
-	int Down = 0;
-	int Left = 0;
-	int Right = 0;
-	int Menu = 0;
-	int View = 0;
-	int LThumb = 0;
-	int RThumb = 0;
-	int LShoulder = 0;
-	int RShoulder = 0;
-	int LTrigger = 0;
-	int RTrigger = 0;
-	int MovementThumbY = 0;
-	int MovementThumbYM = 0;
-	int MovementThumbX = 0;
-	int MovementThumbXM = 0;
-	std::string MovementStick = "Left";
-	std::string MouseStick = "Right";
+
+	int a = 0;
+	int b = 0;
+	int x = 0;
+	int y = 0;
+	int up = 0;
+	int down = 0;
+	int left = 0;
+	int right = 0;
+	int menu = 0;
+	int view = 0;
+	int lThumb = 0;
+	int rThumb = 0;
+	int lShoulder = 0;
+	int rShoulder = 0;
+	int lTrigger = 0;
+	int rTrigger = 0;
+	int movementThumbY = 0;
+	int movementThumbYM = 0;
+	int movementThumbX = 0;
+	int movementThumbXM = 0;
+
+	std::string movementStick = "Left";
+	std::string mouseStick = "Right";
+
 	bool logging = true;
 };
 

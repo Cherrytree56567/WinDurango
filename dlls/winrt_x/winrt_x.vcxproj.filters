@@ -1339,7 +1339,7 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\common\WinDurangoConfig.cpp">
+    <ClCompile Include="WinDurangoConfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -2508,16 +2508,13 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="common.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="toml.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WinDurangoConfig.h">
+    <ClInclude Include="logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="logger.h">
+    <ClInclude Include="WinDurangoConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

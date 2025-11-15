@@ -82,7 +82,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(VC_IncludePath);$(ProjectDir);$(WindowsSDK_IncludePath);$(ProjectDir)\External;$(ProjectDir)\$(PlatformShortName)\$(Configuration)\Generated Files;$(ProjectDir)\</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(ProjectDir);$(WindowsSDK_IncludePath);$(ProjectDir)\Implementation;$(ProjectDir)\External;$(ProjectDir)\$(PlatformShortName)\$(Configuration)\Generated Files;$(ProjectDir)\</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);;D:\Documents\Visual Studio 2022\Projects\WinDurango\dlls\winrt_x\x64\Debug\Generated Files</IncludePath>
@@ -106,7 +106,7 @@
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)\External;$(ProjectDir)\$(PlatformShortName)\$(Configuration)\Generated Files;$(ProjectDir)\</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(VC_IncludePath);$(ProjectDir);$(WindowsSDK_IncludePath);$(ProjectDir)\External;</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(ProjectDir);$(WindowsSDK_IncludePath);$(ProjectDir)\Implementation;$(ProjectDir)\External;</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
@@ -162,7 +162,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="common.h" />
     <ClInclude Include="ConnectedStorage\Windows.Xbox.Storage.ConnectedStorage.h" />
     <ClInclude Include="Implementation\Microsoft.Xbox.GameChat.AccessibilitySettingsChangedEventArgs.h" />
     <ClInclude Include="Implementation\Microsoft.Xbox.GameChat.ChannelUpdatedEventArgs.h" />
@@ -556,9 +555,6 @@
     <ClInclude Include="WinDurangoConfig.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\common\WinDurangoConfig.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="ConnectedStorage\Windows.Xbox.Storage.ConnectedStorage.cpp" />
     <ClCompile Include="Implementation\Microsoft.Xbox.GameChat.AccessibilitySettingsChangedEventArgs.cpp" />
     <ClCompile Include="Implementation\Microsoft.Xbox.GameChat.ChannelUpdatedEventArgs.cpp" />
@@ -951,6 +947,7 @@
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="WinDurangoConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
