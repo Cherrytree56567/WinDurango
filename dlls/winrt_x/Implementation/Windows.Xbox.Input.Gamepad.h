@@ -26,12 +26,6 @@ namespace winrt::Windows::Xbox::Input::implementation
             keyboardButtons[11].first = wdcfg.GetData().B;
             keyboardButtons[12].first = wdcfg.GetData().X;
             keyboardButtons[13].first = wdcfg.GetData().Y;
-            if (wdcfg.GetData().game == WinDurangoConfigData::Game::Minecraft) {
-                isMC = true;
-            }
-            else {
-                isMC = false;
-            }
         }
 
         static winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Xbox::Input::IGamepad> Gamepads();
@@ -59,10 +53,7 @@ namespace winrt::Windows::Xbox::Input::implementation
         float deltasumX = 0.0f;
         float deltasumY = 0.0f;
         bool firstFrame = true;
-        bool menuOpened = false;
         WinDurangoConfig& wdcfg;
-        static int currNeed;
-        static bool isMC;
 
         inline static std::pair<WORD, GamepadButtons> const gamepadButtons[] =
         {

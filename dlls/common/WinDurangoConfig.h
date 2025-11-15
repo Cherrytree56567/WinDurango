@@ -46,8 +46,6 @@ struct WinDurangoConfigData
 	int MovementThumbXM = 0;
 	std::string MovementStick = "Left";
 	std::string MouseStick = "Right";
-	bool invertedHotBar = false; // Only applies if the game is Minecraft
-	bool experimental = false;
 	bool logging = true;
 };
 

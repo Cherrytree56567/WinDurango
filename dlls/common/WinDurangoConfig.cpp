@@ -43,10 +43,10 @@ void WinDurangoConfig::ProcessConfigFile()
 {
 	static constexpr auto default_config_data = R"(
 [WinDurango]
-Gamertag = "TheDurangler4"
+Gamertag = "TheDurangler"
 Gamerscore = 1500
 Reputation = 5
-Game = "Minecraft"
+Game = "Unknown"
 AgeGroup = "Adult"
 		
 [KeyboardMapping]
@@ -72,11 +72,7 @@ MovThumbX = 68
 MovThumbXM = 65
 MovementStick = "Left"
 MouseStick = "Right"
-experimental = false
 logging = true
-
-[Minecraft]
-invertedHotBar = false
 	)"sv;
 
 	try
@@ -134,13 +130,11 @@ invertedHotBar = false
 		auto movthumbxm_opt = tbl["KeyboardMapping"]["MovThumbXM"].value<int>();
 		auto movstick_opt = tbl["KeyboardMapping"]["MovementStick"].value<std::string_view>();
 		auto mousestick_opt = tbl["KeyboardMapping"]["MouseStick"].value<std::string_view>();
-		auto invHot_opt = tbl["Minecraft"]["invertedHotBar"].value<bool>();
-		auto exp_opt = tbl["KeyboardMapping"]["experimental"].value<bool>();
 		auto log_opt = tbl["KeyboardMapping"]["logging"].value<bool>();
 
 		const WinDurangoConfigData data
 		{
-			.gamertag = std::string(gamertag_opt.value_or("WinDurango2")),
+			.gamertag = std::string(gamertag_opt.value_or("WinDurango")),
 			.gamerscore = 0,
 			.reputation = 0,
 			.ageGroup =
@@ -178,8 +172,6 @@ invertedHotBar = false
 			.MovementThumbXM = movthumbxm_opt.value_or(65),
 			.MovementStick = std::string(movstick_opt.value_or("left")),
 			.MouseStick = std::string(mousestick_opt.value_or("right")),
-			.invertedHotBar = invHot_opt.value_or(false),
-			.experimental = exp_opt.value_or(false),
 			.logging = log_opt.value_or(true),
 		};
 
