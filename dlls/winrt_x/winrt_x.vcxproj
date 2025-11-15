@@ -162,7 +162,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ConnectedStorage\Windows.Xbox.Storage.ConnectedStorage.h" />
+    <ClInclude Include="Implementation\Windows.Xbox.Storage.ConnectedStorage.h" />
     <ClInclude Include="Implementation\Microsoft.Xbox.GameChat.AccessibilitySettingsChangedEventArgs.h" />
     <ClInclude Include="Implementation\Microsoft.Xbox.GameChat.ChannelUpdatedEventArgs.h" />
     <ClInclude Include="Implementation\Microsoft.Xbox.GameChat.ChatManager.h" />
@@ -555,7 +555,7 @@
     <ClInclude Include="WinDurangoConfig.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ConnectedStorage\Windows.Xbox.Storage.ConnectedStorage.cpp" />
+    <ClCompile Include="Implementation\Windows.Xbox.Storage.ConnectedStorage.cpp" />
     <ClCompile Include="Implementation\Microsoft.Xbox.GameChat.AccessibilitySettingsChangedEventArgs.cpp" />
     <ClCompile Include="Implementation\Microsoft.Xbox.GameChat.ChannelUpdatedEventArgs.cpp" />
     <ClCompile Include="Implementation\Microsoft.Xbox.GameChat.ChatManager.cpp" />
