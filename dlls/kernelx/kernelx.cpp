@@ -236,7 +236,7 @@ void GetSystemOSVersion_X(LPSYSTEMOSVERSIONINFO VersionInformation) {
 
 
 CONSOLE_TYPE GetConsoleType_X() {
-    return CONSOLE_TYPE::CONSOLE_TYPE_XBOX_ONE_X_DEVKIT;
+    return CONSOLE_TYPE::CONSOLE_TYPE_XBOX_ONE_X;
 }
 
 PVOID XMemAllocDefault_X(SIZE_T dwSize, uint64_t flags) {
