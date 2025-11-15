@@ -347,7 +347,6 @@ LPVOID VirtualAllocEx_X(HANDLE hProcess, LPVOID lpAddress, SIZE_T dwSize, DWORD 
             printf("VirtualAllocEx failed due to missing privileges (SeDebugPrivilege).\n");
         }
 
-        // Fallback only if allocating into self
         if (hProcess == GetCurrentProcess() || hProcess == NULL) {
             printf("Attempting fallback with VirtualAlloc...\n");
 
@@ -361,7 +360,6 @@ LPVOID VirtualAllocEx_X(HANDLE hProcess, LPVOID lpAddress, SIZE_T dwSize, DWORD 
         }
     }
 
-    // Final safety: log if still null
     if (!ret) {
         printf("VirtualAllocEx_X ultimately failed to allocate %zu bytes.\n", dwSize);
     }

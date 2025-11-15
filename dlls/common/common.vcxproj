@@ -154,6 +154,7 @@
     <ClInclude Include="Logger.h" />
     <ClInclude Include="logfmtxx.hpp" />
     <ClInclude Include="toml.hpp" />
+    <ClInclude Include="WinDurangoConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />

@@ -1,8 +1,8 @@
-#include "pch.h"
 #include "WinDurangoConfig.h"
 #include <winrt/Windows.Storage.h>
 #include <winrt/Windows.Foundation.h>
 #include <winrt/base.h>
+#include "logger.h"
 using namespace winrt::Windows::Storage;
 
 WinDurangoConfig& WinDurangoConfig::Instance()
@@ -21,47 +21,67 @@ void WinDurangoConfig::SetData(const WinDurangoConfigData& data)
 	_data = data;
 }
 
+std::string WStringToUTF8(const std::wstring& wstr) {
+	if (wstr.empty( )) return {};
+	int size_needed = WideCharToMultiByte(CP_UTF8, 0, wstr.data( ), (int) wstr.size( ), nullptr, 0, nullptr, nullptr);
+	std::string str(size_needed, 0);
+	WideCharToMultiByte(CP_UTF8, 0, wstr.data( ), (int) wstr.size( ), str.data( ), size_needed, nullptr, nullptr);
+	return str;
+}
+
+std::wstring UTF8ToWString(const std::string& str) {
+	if (str.empty( )) return {};
+	int size_needed = MultiByteToWideChar(CP_UTF8, 0, str.data( ), (int) str.size( ), nullptr, 0);
+	std::wstring wstr(size_needed, 0);
+	MultiByteToWideChar(CP_UTF8, 0, str.data( ), (int) str.size( ), wstr.data( ), size_needed);
+	return wstr;
+}
+
 using namespace std::string_view_literals;
 
 void WinDurangoConfig::ProcessConfigFile()
 {
 	static constexpr auto default_config_data = R"(
-		[WinDurango]
-		Gamertag = "TheDurangler2"
-		Gamerscore = 1500
-		Reputation = 5
-		Game = "Minecraft"
-		AgeGroup = "Adult"
+[WinDurango]
+Gamertag = "TheDurangler"
+Gamerscore = 1500
+Reputation = 5
+Game = "Unknown"
+AgeGroup = "Adult"
 		
-		[KeyboardMapping]
-		A = 32
-		B = 81
-		X = 82
-		Y = 69
-		Up = 38
-		Down = 40
-		Left = 37
-		Right = 39
-		Menu = 13
-		View = 27
-		LThumb = 161
-		RThumb = 160
-		LShoulder = 162
-		RShoulder = 163
-		LTrigger = 2
-		RTrigger = 1
-		MovThumbY = 87
-		MovThumbYM = 83
-		MovThumbX = 68
-		MovThumbXM = 65
-		MovementStick = "Left"
-		MouseStick = "Right"
+[KeyboardMapping]
+A = 32
+B = 81
+X = 82
+Y = 69
+Up = 38
+Down = 40
+Left = 37
+Right = 39
+Menu = 13
+View = 27
+LThumb = 161
+RThumb = 160
+LShoulder = 162
+RShoulder = 163
+LTrigger = 2
+RTrigger = 1
+MovThumbY = 87
+MovThumbYM = 83
+MovThumbX = 68
+MovThumbXM = 65
+MovementStick = "Left"
+MouseStick = "Right"
+logging = true
 	)"sv;
 
 	try
 	{
 		/*
 		* We need to use WinRT Storage APIs in UWP
+		* 
+		* btw, this uses .get() which is blocking the thread
+		* TODO: Optimize
 		*/
 		StorageFolder localFolder = ApplicationData::Current().LocalFolder();
 		std::wstring folderPath = std::wstring(localFolder.Path());
@@ -71,8 +91,7 @@ void WinDurangoConfig::ProcessConfigFile()
 				.CreateFileAsync(L"config.toml", winrt::Windows::Storage::CreationCollisionOption::ReplaceExisting)
 				.get();
 
-			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-			std::wstring wide = converter.from_bytes(std::string(default_config_data));
+			std::wstring wide = UTF8ToWString(default_config_data.data());
 			winrt::Windows::Storage::FileIO::WriteTextAsync(file, wide).get();
 		}
 
@@ -111,10 +130,11 @@ void WinDurangoConfig::ProcessConfigFile()
 		auto movthumbxm_opt = tbl["KeyboardMapping"]["MovThumbXM"].value<int>();
 		auto movstick_opt = tbl["KeyboardMapping"]["MovementStick"].value<std::string_view>();
 		auto mousestick_opt = tbl["KeyboardMapping"]["MouseStick"].value<std::string_view>();
+		auto log_opt = tbl["KeyboardMapping"]["logging"].value<bool>();
 
 		const WinDurangoConfigData data
 		{
-			.gamertag = std::string(gamertag_opt.value_or("WinDurango2")),
+			.gamertag = std::string(gamertag_opt.value_or("WinDurango")),
 			.gamerscore = 0,
 			.reputation = 0,
 			.ageGroup =
@@ -152,47 +172,23 @@ void WinDurangoConfig::ProcessConfigFile()
 			.MovementThumbXM = movthumbxm_opt.value_or(65),
 			.MovementStick = std::string(movstick_opt.value_or("left")),
 			.MouseStick = std::string(mousestick_opt.value_or("right")),
+			.logging = log_opt.value_or(true),
 		};
 
 		SetData(data);
 	}
 	catch (const toml::parse_error& err)
 	{
-		LOG_INFO("WinDurangoConfig || Parsing failed: %s\n", err);
-		const WinDurangoConfigData data
-		{
-			.gamertag = std::string("TheDurangler2"),
-			.gamerscore = 1500,
-			.reputation = 5,
-			.ageGroup = WinDurangoConfigData::AgeGroup::Unknown,
-			.A = 0,
-			.B = 0,
-			.X = 0,
-			.Y = 0,
-			.Up = 0,
-			.Down = 0,
-			.Left = 0,
-			.Right = 0,
-			.Menu = 0,
-			.View = 0,
-			.LThumb = 0,
-			.RThumb = 0,
-			.LShoulder = 0,
-			.RShoulder = 0,
-			.LTrigger = 0,
-			.RTrigger = 0,
-			.MovementThumbY = 0,
-			.MovementThumbYM = 0,
-			.MovementThumbX = 0,
-			.MovementThumbXM = 0,
-			.MovementStick = "left",
-			.MouseStick = "right",
-		};
-		SetData(data);
+		LOG_ERROR("Couldn't Parse config.toml!!!");
 	}
 }
 
 WinDurangoConfig::WinDurangoConfig()
 {
 	ProcessConfigFile();
+}
+
+bool GetLoggingCfg()
+{
+	return WinDurangoConfig::Instance().GetData().logging;
 }

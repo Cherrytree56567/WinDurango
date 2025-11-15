@@ -1,14 +1,16 @@
 #pragma once
 #include "toml.hpp"
 #include <locale>
-#include <codecvt>
+#include <Windows.h>
+#include <string>
 #include <filesystem>
+#include <winrt/base.h>
 
 struct WinDurangoConfigData
 {
-	std::string gamertag{ "TheDurangler" };
-	int gamerscore{ 0 };
-	int reputation{ 0 };
+	std::string gamertag{ "TheDurangler4" };
+	int gamerscore{ 1500 };
+	int reputation{ 5 };
 	enum class AgeGroup
 	{
 		Child,
@@ -44,6 +46,7 @@ struct WinDurangoConfigData
 	int MovementThumbXM = 0;
 	std::string MovementStick = "Left";
 	std::string MouseStick = "Right";
+	bool logging = true;
 };
 
 class WinDurangoConfig
