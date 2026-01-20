@@ -185,7 +185,10 @@ HRESULT wd::dxgi_swapchain::Present1(UINT SyncInterval, UINT PresentFlags,
 	}
 
 	if (wd::g_Overlay)
-		wd::g_Overlay->Present();
+		wd::g_Overlay->Present( );
+
+	if (!pPresentParameters)
+		return wrapped_interface->Present(SyncInterval, PresentFlags);
 
 	return wrapped_interface->Present1(SyncInterval, PresentFlags, pPresentParameters);
 }

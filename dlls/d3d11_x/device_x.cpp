@@ -63,6 +63,26 @@ HRESULT wd::device_x::CreateTexture2D(
 	D3D11_TEXTURE2D_DESC fixedDesc = *pDesc;
 	fixedDesc.MiscFlags &= ~(D3D11_RESOURCE_MISC_TILE_POOL); // 🚫 Fix the bad flag
 
+	switch (fixedDesc.Format)
+	{
+	case DXGI_FORMAT_D16_UNORM:
+	case DXGI_FORMAT_D24_UNORM_S8_UINT:
+	case DXGI_FORMAT_D32_FLOAT:
+	case DXGI_FORMAT_D32_FLOAT_S8X24_UINT:
+		// Depth texture flags
+		fixedDesc.Usage = D3D11_USAGE_DEFAULT;
+		fixedDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+		fixedDesc.CPUAccessFlags = 0;
+		break;
+
+	default:
+		// Normal texture flags
+		fixedDesc.Usage = D3D11_USAGE_DYNAMIC;
+		fixedDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+		fixedDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		break;
+	}
+
 	ID3D11Texture2D* texture2d = nullptr;
 	HRESULT hr = wrapped_interface->CreateTexture2D(&fixedDesc, pInitialData, &texture2d);
 

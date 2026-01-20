@@ -77,7 +77,8 @@ inline std::wstring UTF8ToWString(const std::string& str) {
 }
 
 static constexpr auto default_config_data = 
-R"("[WinDurango]
+R"("
+[WinDurango]
 Gamertag = "TheDurangler"
 Gamerscore = 1500
 Reputation = 5
@@ -107,4 +108,5 @@ MovThumbX = 68
 MovThumbXM = 65
 MovementStick = "Left"
 MouseStick = "Right"
-logging = true)"sv;
+logging = true
+)"sv;
