@@ -1,9 +1,9 @@
 #pragma once
-#include <inttypes.h>
+#include <common.h>
+
 #include "contexts.h"
 #include "messages.h"
-#include <cstdio>
-#pragma once
+
 typedef uint64_t APU_ADDRESS;
 
 struct ApuHeapState {

@@ -130,6 +130,9 @@
     <ClInclude Include="d3d11_x.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="flags.h">
+      <Filter>Source Files\wrappers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

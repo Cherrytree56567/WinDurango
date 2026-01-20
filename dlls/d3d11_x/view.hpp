@@ -1,5 +1,4 @@
 #pragma once
-#include <emmintrin.h>
 #include "device_child_x.h"
 #include "resource.hpp"
 

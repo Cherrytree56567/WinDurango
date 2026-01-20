@@ -1,14 +1,6 @@
-﻿// AcpHal.cpp
-#include "pch.h"
-#include "AcpHal.h"
+﻿#include "pch.h"
 
-#include <basetyps.h>
-#include <cstdio>
-#include <stdlib.h>
-#include "contexts.h"
-#include <intsafe.h>
-#include <new>
-//#include "../common/DebugLogger.h"
+#include "AcpHal.h"
 
 static APU_HEAP g_ApuHeap = { 0 };
 HRESULT AcpHalAllocateShapeContexts_X(SHAPE_CONTEXTS* ctx) {
