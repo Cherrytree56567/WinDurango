@@ -1,29 +1,9 @@
-/*
-================================================================================
-DISCLAIMER AND LICENSE REQUIREMENT
-
-This code is provided with the condition that if you use, modify, or distribute
-this code in your project, you are required to make your project open source
-under a license compatible with the GNU General Public License (GPL) or a
-similarly strong copyleft license.
-
-By using this code, you agree to:
-1. Disclose your complete source code of any project incorporating this code.
-2. Include this disclaimer in any copies or substantial portions of this file.
-3. Provide clear attribution to the original author.
-
-If you do not agree to these terms, you do not have permission to use this code.
-
-================================================================================
-*/
-#include "d3d11_x.h"
-#include <cstdio>
-#include <mutex>
-#include "overlay/overlay.h"
 #include <d3d11.h>
+
+#include "d3d11_x.h"
+#include "overlay/overlay.h"
 #include "device_context_x.h"
 #include "device_x.h"
-#include "../common/Logger.h"
 
 HRESULT CreateDevice(UINT Flags, wdi::ID3D11Device** ppDevice, wdi::ID3D11DeviceContext** ppImmediateContext)
 {

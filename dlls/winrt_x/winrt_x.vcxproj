@@ -82,7 +82,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(VC_IncludePath);$(ProjectDir);$(WindowsSDK_IncludePath);$(ProjectDir)\Implementation;$(ProjectDir)\External;$(ProjectDir)\$(PlatformShortName)\$(Configuration)\Generated Files;$(ProjectDir)\</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(ProjectDir);$(WindowsSDK_IncludePath);$(ProjectDir)\Implementation;$(ProjectDir)\External;$(SolutionDir)dlls\common;$(ProjectDir)\$(PlatformShortName)\$(Configuration)\Generated Files;$(ProjectDir)\</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);;D:\Documents\Visual Studio 2022\Projects\WinDurango\dlls\winrt_x\x64\Debug\Generated Files</IncludePath>
@@ -106,7 +106,7 @@
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)\External;$(ProjectDir)\$(PlatformShortName)\$(Configuration)\Generated Files;$(ProjectDir)\</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(VC_IncludePath);$(ProjectDir);$(WindowsSDK_IncludePath);$(ProjectDir)\Implementation;$(ProjectDir)\External;</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(ProjectDir);$(WindowsSDK_IncludePath);$(ProjectDir)\Implementation;$(ProjectDir)\External;$(SolutionDir)dlls\common;</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
@@ -549,9 +549,7 @@
     <ClInclude Include="Implementation\Windows.Xbox.UI.KeyboardOptions.h" />
     <ClInclude Include="Implementation\Windows.Xbox.UI.SystemUI.h" />
     <ClInclude Include="Implementation\Windows.Xbox.UI.WebAuthenticationResult.h" />
-    <ClInclude Include="logger.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="toml.hpp" />
     <ClInclude Include="WinDurangoConfig.h" />
   </ItemGroup>
   <ItemGroup>

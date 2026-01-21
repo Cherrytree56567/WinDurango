@@ -1,12 +1,8 @@
 ﻿#pragma once
-
-#include <mutex>
+#include <common.h>
 
 #include <winrt/Windows.Foundation.h>
 #include <winrt/Windows.Foundation.Collections.h>
-
-#include "logger.h"
-#include "toml.hpp"
 
 #include "WinDurangoConfig.h"
 

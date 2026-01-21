@@ -1,7 +1,8 @@
 #pragma once
+#include <common.h>
+
 #include "device_child_x.h"
 #include "device_context_x.h"
-#include "../common/Logger.h"
 
 namespace wdi
 {

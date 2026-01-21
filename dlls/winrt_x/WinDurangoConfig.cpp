@@ -1,6 +1,5 @@
 #include "pch.h"
 
-#include <filesystem>
 #include <winrt/Windows.Storage.h>
 #include <winrt/base.h>
 
