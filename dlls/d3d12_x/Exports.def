@@ -23,3 +23,4 @@ EXPORTS
 	D3DFlushEntireCpuCache = D3DFlushEntireCpuCache @21
 	InternalDriverCallX = InternalDriverCallX @22
 	PixGetPixieEntryPoints = PixGetPixieEntryPoints @23
+	IID_ID3D12Device = IID_ID3D12Device @27

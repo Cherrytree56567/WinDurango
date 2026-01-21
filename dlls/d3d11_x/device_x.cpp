@@ -81,7 +81,7 @@ HRESULT wd::device_x::CreateTexture2D(const D3D11_TEXTURE2D_DESC* pDesc, const D
 		return E_INVALIDARG;
 
 	D3D11_TEXTURE2D_DESC fixedDesc = *pDesc;
-	fixedDesc.MiscFlags &= ~(D3D11_RESOURCE_MISC_TILE_POOL); // 🚫 Fix the bad flag
+	fixedDesc.MiscFlags &= ~(D3D11_RESOURCE_MISC_TILE_POOL); // Fix the bad flag
 
 	auto desc = ConvertResourceDesc(pDesc);
 

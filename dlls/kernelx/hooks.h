@@ -302,7 +302,7 @@ HMODULE WINAPI LoadLibraryExA_Hook(LPCSTR lpLibFileName, _Reserved_ HANDLE hFile
 		lpLibFileName = convert.c_str();
 	}
 
-	printf("LoadLibraryExA_Hook-: %s\n", lpLibFileName);
+	//printf("LoadLibraryExA_Hook-: %s\n", lpLibFileName);
 
 
 

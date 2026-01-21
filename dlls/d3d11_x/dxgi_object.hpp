@@ -29,7 +29,17 @@ namespace wd
 			return E_NOTIMPL;
 		}
 
+		HRESULT SetPrivateDataInterfaceGraphics(const GUID& Name, const IUnknown* pUnknown) {
+			TRACE_NOT_IMPLEMENTED("dxgi_object");
+			return E_NOTIMPL;
+		}
+
 		HRESULT GetPrivateData(const GUID& Name, UINT* pDataSize, void* pData) override {
+			TRACE_NOT_IMPLEMENTED("dxgi_object");
+			return E_NOTIMPL;
+		}
+
+		HRESULT GetParent(const GUID& riid, void** ppParent) override {
 			TRACE_NOT_IMPLEMENTED("dxgi_object");
 			return E_NOTIMPL;
 		}

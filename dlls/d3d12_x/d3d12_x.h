@@ -2,6 +2,9 @@
 #include <cstdint>
 #include <Windows.h>
 #include <iostream>
+#include <d3d12.h>
+
+EXTERN_C const IID IID_ID3D12Device = { 0x189819f1, 0x1db6, 0x4b57, {0xbe, 0x54, 0x18, 0x21, 0x33, 0x9b, 0x85, 0xf7} };
 
 uint64_t D3D12XboxSetProcessDebugFlags(uint32_t flags);
 uint32_t D3D12XboxGetProcessDebugFlags();

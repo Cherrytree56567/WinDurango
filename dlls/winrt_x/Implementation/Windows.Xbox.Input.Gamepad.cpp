@@ -168,6 +168,10 @@ namespace winrt::Windows::Xbox::Input::implementation
 		ZeroMemory(&xiState, sizeof(XINPUT_STATE));
 		reading = {};
 
+		reading.Buttons |= gamepadButtons[XINPUT_GAMEPAD_DPAD_RIGHT].second;
+
+		reading.Timestamp = GetTickCount64();
+
 		if (const DWORD result = XInputGetState(m_id, &xiState); result == ERROR_SUCCESS)
 		{
 			// Debug logging - remove after testing

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.12.35209.166
+# Visual Studio Version 18
+VisualStudioVersion = 18.2.11408.102 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dlls", "dlls", "{BF759166-26A8-4B46-8423-8091158F2EA5}"
 EndProject
@@ -66,7 +66,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "imgui", "imgui", "{114E77CB
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "d3d12_x", "dlls\d3d12_x\d3d12_x.vcxproj", "{DF076E76-174E-414F-A47F-01CC84E3FC80}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xmem", "dlls\xmem\xmem.vcxproj", "{DF076E76-174A-414F-A47F-01CC84E3FC80}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xgameruntime", "dlls\xgameruntime\xgameruntime.vcxproj", "{DF076E76-174E-414F-A47F-01CD84E3FC80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -134,10 +134,10 @@ Global
 		{DF076E76-174E-414F-A47F-01CC84E3FC80}.Debug|x64.Build.0 = Debug|x64
 		{DF076E76-174E-414F-A47F-01CC84E3FC80}.Release|x64.ActiveCfg = Release|x64
 		{DF076E76-174E-414F-A47F-01CC84E3FC80}.Release|x64.Build.0 = Release|x64
-		{DF076E76-174A-414F-A47F-01CC84E3FC80}.Debug|x64.ActiveCfg = Debug|x64
-		{DF076E76-174A-414F-A47F-01CC84E3FC80}.Debug|x64.Build.0 = Debug|x64
-		{DF076E76-174A-414F-A47F-01CC84E3FC80}.Release|x64.ActiveCfg = Release|x64
-		{DF076E76-174A-414F-A47F-01CC84E3FC80}.Release|x64.Build.0 = Release|x64
+		{DF076E76-174E-414F-A47F-01CD84E3FC80}.Debug|x64.ActiveCfg = Debug|x64
+		{DF076E76-174E-414F-A47F-01CD84E3FC80}.Debug|x64.Build.0 = Debug|x64
+		{DF076E76-174E-414F-A47F-01CD84E3FC80}.Release|x64.ActiveCfg = Release|x64
+		{DF076E76-174E-414F-A47F-01CD84E3FC80}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -159,7 +159,7 @@ Global
 		{37489709-8054-4903-9C49-A79846049FC9} = {243DBE8A-7A46-42B5-9FEC-A8E7CB67CE81}
 		{114E77CB-6130-4235-A0F4-3392FA3997C6} = {243DBE8A-7A46-42B5-9FEC-A8E7CB67CE81}
 		{DF076E76-174E-414F-A47F-01CC84E3FC80} = {BF759166-26A8-4B46-8423-8091158F2EA5}
-		{DF076E76-174A-414F-A47F-01CC84E3FC80} = {BF759166-26A8-4B46-8423-8091158F2EA5}
+		{DF076E76-174E-414F-A47F-01CD84E3FC80} = {BF759166-26A8-4B46-8423-8091158F2EA5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {30EA489C-CFA4-4816-BE12-8BCE129039C5}
