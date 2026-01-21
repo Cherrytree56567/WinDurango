@@ -52,6 +52,38 @@ HRESULT wd::device_x::CreateTexture1D(const D3D11_TEXTURE1D_DESC* pDesc, const D
 	return hr;
 }
 
+inline UINT ConvertMiscFlags(UINT pMiscFlags)
+{
+	auto flags = (pMiscFlags & ~D3D11X_RESOURCE_MISC_MASK) & D3D11_RESOURCE_MISC_MASK;
+
+	if (pMiscFlags & D3D11X_RESOURCE_MISC_TILE_POOL)  flags |= D3D11_RESOURCE_MISC_TILE_POOL;
+
+	if (pMiscFlags & D3D11X_RESOURCE_MISC_TILED) flags |= D3D11_RESOURCE_MISC_TILED;
+
+	return flags;
+}
+
+auto ConvertResourceDesc(const D3D11_TEXTURE2D_DESC* pDesc)
+{
+	auto desc = *pDesc;
+
+	desc.MiscFlags = ConvertMiscFlags(pDesc->MiscFlags);
+
+	switch (desc.Usage)
+	{
+	case D3D11_RESOURCE_MISC_MASK:
+		if (desc.BindFlags & ~(D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS))
+			desc.CPUAccessFlags = 0;
+
+		break;
+	case D3D11_USAGE_DYNAMIC:
+		desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		break;
+	}
+
+	return desc;
+}
+
 HRESULT wd::device_x::CreateTexture2D(
 	const D3D11_TEXTURE2D_DESC* pDesc,
 	const D3D11_SUBRESOURCE_DATA* pInitialData,
@@ -63,28 +95,12 @@ HRESULT wd::device_x::CreateTexture2D(
 	D3D11_TEXTURE2D_DESC fixedDesc = *pDesc;
 	fixedDesc.MiscFlags &= ~(D3D11_RESOURCE_MISC_TILE_POOL); // 🚫 Fix the bad flag
 
-	switch (fixedDesc.Format)
-	{
-	case DXGI_FORMAT_D16_UNORM:
-	case DXGI_FORMAT_D24_UNORM_S8_UINT:
-	case DXGI_FORMAT_D32_FLOAT:
-	case DXGI_FORMAT_D32_FLOAT_S8X24_UINT:
-		// Depth texture flags
-		fixedDesc.Usage = D3D11_USAGE_DEFAULT;
-		fixedDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-		fixedDesc.CPUAccessFlags = 0;
-		break;
-
-	default:
-		// Normal texture flags
-		fixedDesc.Usage = D3D11_USAGE_DYNAMIC;
-		fixedDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-		fixedDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		break;
-	}
+	auto desc = ConvertResourceDesc(pDesc);
 
 	ID3D11Texture2D* texture2d = nullptr;
-	HRESULT hr = wrapped_interface->CreateTexture2D(&fixedDesc, pInitialData, &texture2d);
+
+	// This could be modifiing the pDesc so we should set pDesc to desc
+	HRESULT hr = wrapped_interface->CreateTexture2D(&desc, pInitialData, &texture2d);
 
 	if (SUCCEEDED(hr) && texture2d)
 	{
