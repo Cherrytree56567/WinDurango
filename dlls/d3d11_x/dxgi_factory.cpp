@@ -1,31 +1,13 @@
-/*
-================================================================================
-DISCLAIMER AND LICENSE REQUIREMENT
-
-This code is provided with the condition that if you use, modify, or distribute
-this code in your project, you are required to make your project open source
-under a license compatible with the GNU General Public License (GPL) or a
-similarly strong copyleft license.
-
-By using this code, you agree to:
-1. Disclose your complete source code of any project incorporating this code.
-2. Include this disclaimer in any copies or substantial portions of this file.
-3. Provide clear attribution to the original author.
-
-If you do not agree to these terms, you do not have permission to use this code.
-
-================================================================================
-*/
-#include "dxgi_factory.h"
 #include <windows.ui.core.h>
 #include <wrl/client.h>
 #include <wrl/wrappers/corewrappers.h>
-
-#include "dxgi_swapchain.h"
-#include "../kernelx/CoreWindowWrapperX.h"
-#include "overlay/overlay.h"
 #include <d3d11_2.h>
-#include "../common/Logger.h"
+
+#include "dxgi_factory.h"
+#include "dxgi_swapchain.h"
+#include "overlay/overlay.h"
+
+#include "../kernelx/CoreWindowWrapperX.h"
 
 #define DXGI_SWAPCHAIN_FLAG_MASK DXGI_SWAP_CHAIN_FLAG_NONPREROTATED | DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH | DXGI_SWAP_CHAIN_FLAG_GDI_COMPATIBLE \
 		| DXGI_SWAP_CHAIN_FLAG_RESTRICTED_CONTENT | DXGI_SWAP_CHAIN_FLAG_RESTRICT_SHARED_RESOURCE_DRIVER | DXGI_SWAP_CHAIN_FLAG_DISPLAY_ONLY | DXGI_SWAP_CHAIN_FLAG_FRAME_LATENCY_WAITABLE_OBJECT \

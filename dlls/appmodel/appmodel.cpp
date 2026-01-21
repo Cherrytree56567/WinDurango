@@ -1,12 +1,6 @@
 // appmodel.cpp : Defines the exported functions for the DLL.
 #include "pch.h"
 #include "appmodel.h"
-#include <stdlib.h>
-#include <hstring.h>
-#include <strsafe.h>
-#include <string>
-#include <vector>
-#include "../common/Logger.h"
 
 CRITICAL_SECTION CriticalSection;
 __int64 qword_18009E948 = 0;

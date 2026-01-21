@@ -47,13 +47,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>$(IncludePath);$(ProjectDir)\..\..\thirdparty\Detours\include</IncludePath>
+    <IncludePath>$(IncludePath);$(ProjectDir)\..\..\thirdparty\Detours\include;$(SolutionDir)dlls\common;</IncludePath>
     <LibraryPath>$(LibraryPath);$(ProjectDir)\..\..\thirdparty\Detours\lib.X64;</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>$(IncludePath);$(ProjectDir)\..\..\thirdparty\Detours\include</IncludePath>
+    <IncludePath>$(IncludePath);$(ProjectDir)\..\..\thirdparty\Detours\include;$(SolutionDir)dlls\common;</IncludePath>
     <LibraryPath>$(LibraryPath);$(ProjectDir)\..\..\thirdparty\Detours\lib.X64;</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
