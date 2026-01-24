@@ -336,7 +336,7 @@ HMODULE WINAPI LoadLibraryW_Hook(LPCWSTR lpLibFileName)
 
 		lpLibFileName = convert.data();
 	}
-	printf("LoadLibraryW_Hook: %ls\n", lpLibFileName);
+	//printf("LoadLibraryW_Hook: %ls\n", lpLibFileName);
 
 	HMODULE result = TrueLoadLibraryW(lpLibFileName);
 	PatchNeededImports(result, GetRuntimeModule(), "?GetActivationFactoryByPCWSTR@@YAJPEAXAEAVGuid@Platform@@PEAPEAX@Z", GetActivationFactoryRedirect);

@@ -21,13 +21,12 @@ namespace winrt::Windows::Xbox::Input::implementation
     }
     winrt::event_token Controller::ControllerAdded(winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::Input::ControllerAddedEventArgs> const& handler)
     {
-        LOG_INFO_W(L"Controller || Controller Added!\n");
-        LOG_NOT_IMPLEMENTED(); return {};
+        winrt::event_token evt = m_controllerAdded.add(handler);
+        return evt;
     }
     void Controller::ControllerAdded(winrt::event_token const& token) noexcept
     {
-        LOG_INFO_W(L"Controller || Controller Added!\n");
-        throw hresult_not_implemented();
+        m_controllerAdded.remove(token);
     }
     winrt::event_token Controller::ControllerRemoved(winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::Input::ControllerRemovedEventArgs> const& handler)
     {

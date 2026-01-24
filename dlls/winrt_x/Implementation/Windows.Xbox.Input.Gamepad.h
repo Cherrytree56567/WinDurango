@@ -55,6 +55,7 @@ namespace winrt::Windows::Xbox::Input::implementation
         float deltaSumY = 0.0f;
         bool firstFrame = true;
         WinDurangoConfig& config;
+        inline static winrt::event<Windows::Foundation::EventHandler<GamepadAddedEventArgs>> m_gamepadAdded;
 
         inline static std::pair<WORD, GamepadButtons> const gamepadButtons[] =
         {

@@ -1210,8 +1210,10 @@ void wd::device_context_x::FlushGpuCaches(ID3D11Resource* pResource)
 
 void wd::device_context_x::FlushGpuCacheRange(UINT Flags, void* pBaseAddress, SIZE_T SizeInBytes)
 {
-	LOG_NOT_IMPLEMENTED();
-	throw std::logic_error("Not implemented");
+	if (!wrapped_interface)
+		return;
+
+	wrapped_interface->Flush();
 }
 
 void wd::device_context_x::InsertWaitUntilIdle(UINT Flags)
@@ -1222,8 +1224,9 @@ void wd::device_context_x::InsertWaitUntilIdle(UINT Flags)
 
 UINT64 wd::device_context_x::InsertFence(UINT Flags)
 {
-	LOG_NOT_IMPLEMENTED();
-	throw std::logic_error("Not implemented");
+	static UINT64 fence = 1;
+
+	return fence++;
 }
 
 void wd::device_context_x::InsertWaitOnFence(UINT Flags, UINT64 Fence)
@@ -1467,8 +1470,12 @@ void wd::device_context_x::IASetPlacementVertexBuffer(UINT Slot, ID3D11Buffer* p
 void wd::device_context_x::IASetPlacementIndexBuffer(UINT HardwareIndexFormat, ID3D11Buffer* pIndexBuffer,
 	void* pBaseAddress)
 {
-		LOG_NOT_IMPLEMENTED();
-		throw std::logic_error("Not implemented");
+	if (pIndexBuffer) {
+		DXGI_FORMAT format = (HardwareIndexFormat == 16) ? DXGI_FORMAT_R16_UINT : DXGI_FORMAT_R32_UINT;
+		wrapped_interface->IASetIndexBuffer(pIndexBuffer, format, 0);
+	} else {
+		wrapped_interface->IASetIndexBuffer(nullptr, DXGI_FORMAT_UNKNOWN, 0);
+	}
 }
 
 void wd::device_context_x::HSSetTessellationParameters(
@@ -1559,8 +1566,8 @@ void wd::device_context_x::OMSetSampleMask(UINT64 QuadSampleMask)
 
 UINT32* wd::device_context_x::MakeCeSpace()
 {
-		LOG_NOT_IMPLEMENTED();
-		throw std::logic_error("Not implemented");
+	static UINT32 ceSpace[ 4 ] = { 0 };
+	return ceSpace;
 }
 
 void wd::device_context_x::SetFastResources_Debug(UINT* pTableStart, UINT* pTableEnd)
@@ -1657,13 +1664,34 @@ void wd::device_context_x::SetShaderResourceViewMinLOD(ID3D11ShaderResourceView*
 
 void wd::device_context_x::InsertWaitOnPresent(UINT Flags, ID3D11Resource* pBackBuffer)
 {
-		LOG_NOT_IMPLEMENTED();
-		throw std::logic_error("Not implemented");
+	if (!pBackBuffer) return;
+
+	D3D11_QUERY_DESC queryDesc = {};
+	queryDesc.Query = D3D11_QUERY_EVENT;
+	queryDesc.MiscFlags = 0;
+
+	ID3D11Query* pEventQuery = nullptr;
+	ID3D11Device* dev;
+	wrapped_interface->GetDevice(&dev);
+	HRESULT hr = dev->CreateQuery(&queryDesc, &pEventQuery);
+	if (FAILED(hr) || !pEventQuery) {
+		return;
+	}
+
+	wrapped_interface->End(pEventQuery);
+
+	while (S_FALSE == wrapped_interface->GetData(pEventQuery, nullptr, 0, 0))
+	{
+		Sleep(0);
+	}
+
+	pEventQuery->Release( );
 }
 
 void wd::device_context_x::ClearRenderTargetViewX(ID3D11RenderTargetView* pRenderTargetView, UINT Flags,
 												  const FLOAT ColorRGBA[ 4 ])
 {
+	return;
 	if (!pRenderTargetView)
 	{
 		LOG_ERROR("[ClearRenderTargetViewX] ERROR: pRenderTargetView is null!\n");
@@ -1703,8 +1731,29 @@ void wd::device_context_x::DecompressResource(ID3D11Resource* pDstResource, UINT
 	const wdi::D3D11X_POINT* pDstPoint, ID3D11Resource* pSrcResource, UINT SrcSubresource,
 	const wdi::D3D11X_RECT* pSrcRect, DXGI_FORMAT DecompressFormat, UINT DecompressFlags)
 {
-		LOG_NOT_IMPLEMENTED();
-		throw std::logic_error("Not implemented");
+	if (!pDstResource || !pSrcResource)
+		return;
+
+	if (pDstResource == pSrcResource && DstSubresource == SrcSubresource)
+	{
+		// TODO: This is for in-place decompress
+		return;
+	}
+
+	D3D11_BOX box;
+	box.left = pSrcRect ? pSrcRect->left : 0;
+	box.top = pSrcRect ? pSrcRect->top : 0;
+	box.front = 0;
+	box.right = pSrcRect ? pSrcRect->right : 0;
+	box.bottom = pSrcRect ? pSrcRect->bottom : 0;
+	box.back = 1;
+
+	UINT dstX = pDstPoint ? pDstPoint->x : 0;
+	UINT dstY = pDstPoint ? pDstPoint->y : 0;
+	UINT dstZ = 0;
+
+	wrapped_interface->CopySubresourceRegion(pDstResource, DstSubresource, dstX, dstY, dstZ, pSrcResource, SrcSubresource, &box);
+	// TODO: Actually Decompress - C
 }
 
 void wd::device_context_x::DecompressResourceX(wdi::D3D11X_DESCRIPTOR_RESOURCE* pDstResource, UINT DstSubresource,

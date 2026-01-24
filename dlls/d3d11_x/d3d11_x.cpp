@@ -278,8 +278,33 @@ HRESULT _stdcall DXGIXPresentArray_X(
     _In_ IDXGISwapChain1* const* ppSwapChain,
     _In_ const DXGIX_PRESENTARRAY_PARAMETERS* pPresentParameters)
 {
-    LOG_WARNING("[d3d11_x] !!! STUBBED: DXGIXPresentArray !!!");
-    return E_NOTIMPL;
+    if (!ppSwapChain || NumSwapChains == 0) {
+        return E_POINTER;
+    }
+
+    HRESULT hr = S_OK;
+
+    for (UINT i = 0; i < NumSwapChains; ++i) {
+        IDXGISwapChain1* swapChain = ppSwapChain[i];
+        const DXGIX_PRESENTARRAY_PARAMETERS& params = pPresentParameters[i];
+
+        if (!swapChain) {
+            continue;
+        }
+
+        if (params.Disable) {
+            continue;
+        }
+
+        DXGI_PRESENT_PARAMETERS dxgiParams = {};
+        hr = swapChain->Present1(SyncInterval, Flags, &dxgiParams);
+
+        if (FAILED(hr)) {
+            return hr;
+        }
+    }
+
+    return hr;
 }
 
 HRESULT __stdcall DXGIXSetFrameNotification_X(

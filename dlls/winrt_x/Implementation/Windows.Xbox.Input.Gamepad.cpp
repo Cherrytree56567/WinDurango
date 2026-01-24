@@ -2,6 +2,7 @@
 #include "Windows.h"
 #include "Windows.Xbox.Input.GamepadReading.h"
 #include "Windows.Xbox.Input.Gamepad.h"
+#include "Windows.Xbox.Input.Controller.h"
 #include "Windows.Xbox.Input.Gamepad.g.cpp"
 #include "Windows.Xbox.System.User.h"
 
@@ -35,8 +36,8 @@ namespace winrt::Windows::Xbox::Input::implementation
 			wprintf(L"Gamepad || No Gamepads Found!\n");
 
 			const IGamepad dummyGamepad = winrt::make<Gamepad>(0);
-
 			staticGamepads.Append(dummyGamepad);
+
 		}
 
 		const HWND hwnd = GetFocus();
@@ -63,20 +64,12 @@ namespace winrt::Windows::Xbox::Input::implementation
 
 	event_token Gamepad::GamepadAdded(Foundation::EventHandler<GamepadAddedEventArgs> const& handler)
 	{
-		LOG_INFO_W(L"Gamepad || Gamepad Added!\n");
-
-		LOG_WARNING("Gamepad || GamepadAdded event is not implemented, returning empty token.");
-		
-		return {};
+		return m_gamepadAdded.add(handler);
 	}
 
 	void Gamepad::GamepadAdded(event_token const& token) noexcept
 	{
-		LOG_INFO_W(L"Gamepad || Gamepad Added!\n");
-
-		LOG_NOT_IMPLEMENTED();
-
-		throw hresult_not_implemented();
+		m_gamepadAdded.remove(token);
 	}
 
 	event_token Gamepad::GamepadRemoved(Foundation::EventHandler<GamepadRemovedEventArgs> const& handler)
@@ -163,13 +156,20 @@ namespace winrt::Windows::Xbox::Input::implementation
 
 	RawGamepadReading Gamepad::GetRawCurrentReading()
 	{
+		/*
+		static bool b = false;
+
+		if (b) {
+			IController ng = winrt::Windows::Xbox::Input::implementation::Controller::Controllers().GetAt(0);
+			void* abiPtr = winrt::get_abi(ng);
+			IControllerAddedEventArgs args(nullptr);
+			winrt::Windows::Xbox::Input::implementation::Controller::m_controllerAdded(ng, args);
+		}*/
 
 		XINPUT_STATE xiState;
 		ZeroMemory(&xiState, sizeof(XINPUT_STATE));
 		reading = {};
-
-		reading.Buttons |= gamepadButtons[XINPUT_GAMEPAD_DPAD_RIGHT].second;
-
+		
 		reading.Timestamp = GetTickCount64();
 
 		if (const DWORD result = XInputGetState(m_id, &xiState); result == ERROR_SUCCESS)

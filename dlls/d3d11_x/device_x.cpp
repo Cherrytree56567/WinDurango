@@ -1,6 +1,7 @@
 ﻿#include "device_x.h"
-#include "resource.hpp"
 #include "view.hpp"
+#include "resource.hpp"
+#include "device_child_x.h"
 
 HRESULT wd::device_x::CreateBuffer(const D3D11_BUFFER_DESC* pDesc, const D3D11_SUBRESOURCE_DATA* pInitialData, ID3D11Buffer** ppBuffer)
 {
@@ -253,14 +254,16 @@ HRESULT wd::device_x::SetDriverHint(UINT Feature, UINT Value)
 
 HRESULT wd::device_x::CreateDmaEngineContext(const wdi::D3D11_DMA_ENGINE_CONTEXT_DESC* pDmaEngineContextDesc, wdi::ID3D11DmaEngineContextX** ppDmaDeviceContext)
 {
-	LOG_NOT_IMPLEMENTED();
-	throw std::logic_error("Not implemented");
+	if (!pDmaEngineContextDesc || !ppDmaDeviceContext)
+		return E_POINTER;
+
+	*ppDmaDeviceContext = new wd::D3D11DmaEngineContextX(*pDmaEngineContextDesc, wrapped_interface);
+	return S_OK;
 }
 
 BOOL wd::device_x::IsFencePending(UINT64 Fence)
 {
-	LOG_NOT_IMPLEMENTED();
-	throw std::logic_error("Not implemented");
+	return false;
 }
 
 BOOL wd::device_x::IsResourcePending(ID3D11Resource* pResource)
@@ -271,8 +274,21 @@ BOOL wd::device_x::IsResourcePending(ID3D11Resource* pResource)
 
 HRESULT wd::device_x::CreatePlacementBuffer(const D3D11_BUFFER_DESC* pDesc, void* pVirtualAddress, ID3D11Buffer** ppBuffer)
 {
-	LOG_NOT_IMPLEMENTED();
-	throw std::logic_error("Not implemented");
+	if (!pDesc || !ppBuffer)
+		return E_INVALIDARG;
+
+	*ppBuffer = nullptr;
+
+	D3D11_SUBRESOURCE_DATA initData{};
+	if (pVirtualAddress) {
+		initData.pSysMem = pVirtualAddress;
+		initData.SysMemPitch = 0;
+		initData.SysMemSlicePitch = 0;
+	}
+
+	HRESULT hr = wrapped_interface->CreateBuffer(pDesc, pVirtualAddress ? &initData : nullptr, ppBuffer);
+
+	return hr;
 }
 
 HRESULT wd::device_x::CreatePlacementTexture1D(const D3D11_TEXTURE1D_DESC* pDesc, UINT TileModeIndex, UINT Pitch, void* pVirtualAddress, ID3D11Texture1D** ppTexture1D)
@@ -422,4 +438,160 @@ void wd::device_x::GetGpuHardwareConfiguration(wdi::D3D11X_GPU_HARDWARE_CONFIGUR
 	pGpuHardwareConfiguration->GpuFrequency = 853'000'000; // 853 MHz (Xbox One)
 	pGpuHardwareConfiguration->HardwareVersion = wdi::D3D11X_HARDWARE_VERSION_XBOX_ONE;
 	pGpuHardwareConfiguration->GpuCuCount = 12; // 12 Compute Units (Xbox One baseline)
+}
+
+D3D11_DEVICE_CONTEXT_TYPE wd::D3D11DmaEngineContextX::GetType(ID3D11DmaEngineContextX* pDmaEngineContextX) {
+	LOG_NOT_IMPLEMENTED( );
+	throw std::logic_error("Not implemented");
+	return D3D11_DEVICE_CONTEXT_TYPE::D3D11_DEVICE_CONTEXT_DEFERRED;
+}
+
+void wd::D3D11DmaEngineContextX::CopyResource(ID3D11DmaEngineContextX* pDmaEngineContextX, ID3D11Resource* pDstResource, ID3D11Resource* pSrcResource, UINT CopyFlags) {
+	LOG_NOT_IMPLEMENTED( );
+	throw std::logic_error("Not implemented");
+}
+
+void wd::D3D11DmaEngineContextX::CopySubresourceRegion(ID3D11Resource* pDstResource, UINT DstSubresource, UINT DstX, UINT DstY, UINT DstZ, ID3D11Resource* pSrcResource, UINT SrcSubresource, const D3D11_BOX* pSrcBox, UINT CopyFlags) {
+	LOG_NOT_IMPLEMENTED( );
+	throw std::logic_error("Not implemented");
+}
+
+HRESULT wd::D3D11DmaEngineContextX::LZDecompressBuffer(ID3D11Buffer* pDstBuffer, UINT DstOffsetBytes, ID3D11Buffer* pSrcBuffer, UINT SrcOffsetBytes, UINT SrcSizeBytes, UINT CopyFlags) {
+	LOG_NOT_IMPLEMENTED( );
+	throw std::logic_error("Not implemented");
+	return 0;
+}
+
+HRESULT wd::D3D11DmaEngineContextX::LZDecompressTexture(ID3D11Resource* pDstResource, UINT DstSubresource, UINT DstX, UINT DstY, UINT DstZ, ID3D11Buffer* pSrcBuffer, UINT CopyFlags) {
+	LOG_NOT_IMPLEMENTED( );
+	throw std::logic_error("Not implemented");
+	return 0;
+}
+
+HRESULT wd::D3D11DmaEngineContextX::LZCompressBuffer(ID3D11Buffer* pDstBuffer, UINT DstOffsetBytes, ID3D11Buffer* pSrcBuffer, UINT SrcOffsetBytes, UINT SrcSizeBytes, UINT CopyFlags) {
+	LOG_NOT_IMPLEMENTED( );
+	throw std::logic_error("Not implemented");
+	return 0;
+}
+
+HRESULT wd::D3D11DmaEngineContextX::LZCompressTexture(ID3D11Buffer* pDstBuffer, ID3D11Resource* pSrcResource, UINT SrcSubresource, const D3D11_BOX* pSrcBox, UINT CopyFlags) {
+	LOG_NOT_IMPLEMENTED( );
+	throw std::logic_error("Not implemented");
+	return 0;
+}
+
+HRESULT wd::D3D11DmaEngineContextX::JPEGDecode(ID3D11Resource* pDstResource, UINT DstSubresource, UINT DstX, UINT DstY, UINT DstZ, ID3D11Buffer* pSrcBuffer, UINT CopyFlags) {
+	LOG_NOT_IMPLEMENTED( );
+	throw std::logic_error("Not implemented");
+	return 0;
+}
+
+UINT64 wd::D3D11DmaEngineContextX::InsertFence(UINT Flags) {
+	LOG_NOT_IMPLEMENTED( );
+	throw std::logic_error("Not implemented");
+	return 0;
+}
+
+void wd::D3D11DmaEngineContextX::InsertWaitOnFence(UINT Flags, uint64_t Fence) {
+	LOG_NOT_IMPLEMENTED( );
+	throw std::logic_error("Not implemented");
+}
+
+HRESULT wd::D3D11DmaEngineContextX::Submit() {
+	LOG_NOT_IMPLEMENTED( );
+	throw std::logic_error("Not implemented");
+	return 0;
+}
+
+void wd::D3D11DmaEngineContextX::CopyLastErrorCodeToMemory(void* pAddress) {
+	LOG_NOT_IMPLEMENTED( );
+	throw std::logic_error("Not implemented");
+}
+
+void wd::D3D11DmaEngineContextX::CopyLastErrorCodeToBuffer(ID3D11Buffer* pDstBuffer, UINT OffsetBytes) {
+	LOG_NOT_IMPLEMENTED( );
+	throw std::logic_error("Not implemented");
+}
+
+void wd::D3D11DmaEngineContextX::CopyMemoryToMemory(void* pDstAddress, void* pSrcAddress, size_t SizeBytes) {
+	LOG_NOT_IMPLEMENTED( );
+	throw std::logic_error("Not implemented");
+}
+
+void wd::D3D11DmaEngineContextX::FillMemoryWithValue(void* pDstAddress, size_t SizeBytes, UINT FillValue) {
+	LOG_NOT_IMPLEMENTED( );
+	throw std::logic_error("Not implemented");
+}
+
+void wd::D3D11DmaEngineContextX::FillResourceWithValue(ID3D11Resource* pDstResource, UINT FillValue) {
+	LOG_NOT_IMPLEMENTED( );
+	throw std::logic_error("Not implemented");
+}
+
+HRESULT wd::D3D11DmaEngineContextX::LZDecompressMemory(void* pDstAddress, void* pSrcAddress, UINT SrcSizeBytes, UINT CopyFlags) {
+	LOG_NOT_IMPLEMENTED( );
+	throw std::logic_error("Not implemented");
+	return 0;
+}
+
+HRESULT wd::D3D11DmaEngineContextX::LZCompressMemory(void* pDstAddress, void* pSrcAddress, UINT SrcSizeBytes, UINT CopyFlags) {
+	LOG_NOT_IMPLEMENTED( );
+	throw std::logic_error("Not implemented");
+	return 0;
+}
+
+void wd::D3D11DmaEngineContextX::WriteTimestampToMemory(void* pDstAddress) {
+	LOG_NOT_IMPLEMENTED( );
+	throw std::logic_error("Not implemented");
+}
+
+void wd::D3D11DmaEngineContextX::WriteTimestampToBuffer(ID3D11Buffer* pBuffer, UINT OffsetBytes) {
+	LOG_NOT_IMPLEMENTED( );
+	throw std::logic_error("Not implemented");
+}
+
+void wd::D3D11DmaEngineContextX::WriteValueBottomOfPipe(void* pDestination, UINT Value) {
+	LOG_NOT_IMPLEMENTED( );
+	throw std::logic_error("Not implemented");
+}
+
+void wd::D3D11DmaEngineContextX::InsertWaitOnMemory(const void* pAddress, UINT Flags, D3D11_COMPARISON_FUNC ComparisonFunction, UINT ReferenceValue, UINT Mask) {
+	LOG_NOT_IMPLEMENTED( );
+	throw std::logic_error("Not implemented");
+}
+
+void STDMETHODCALLTYPE wd::D3D11DmaEngineContextX::GetDevice(::ID3D11Device** ppDevice) {
+	*ppDevice = wrapped_interface;
+}
+
+HRESULT STDMETHODCALLTYPE wd::D3D11DmaEngineContextX::GetPrivateData(REFGUID guid, UINT* pDataSize, void* pData) {
+	LOG_NOT_IMPLEMENTED();
+	return 0;
+}
+
+HRESULT STDMETHODCALLTYPE wd::D3D11DmaEngineContextX::SetPrivateData(REFGUID guid, UINT DataSize, const void* pData) {
+	LOG_NOT_IMPLEMENTED();
+	return 0;
+}
+
+HRESULT STDMETHODCALLTYPE wd::D3D11DmaEngineContextX::SetPrivateDataInterface(REFGUID guid, const IUnknown* pData) {
+	LOG_NOT_IMPLEMENTED();
+	return 0;
+}
+
+HRESULT STDMETHODCALLTYPE wd::D3D11DmaEngineContextX::QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) {
+	LOG_NOT_IMPLEMENTED();
+	return 0;
+}
+
+ULONG STDMETHODCALLTYPE wd::D3D11DmaEngineContextX::AddRef() {
+	return ++refCount;
+}
+
+ULONG STDMETHODCALLTYPE wd::D3D11DmaEngineContextX::Release() {
+	ULONG count = --refCount;
+	if (count == 0) {
+		delete this;
+	}
+	return count;
 }

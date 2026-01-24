@@ -7,7 +7,6 @@ namespace winrt::Windows::Xbox::System::implementation
 {
     UserOnlineState User::OnlineState()
     {
-
         return UserOnlineState::Offline;
     }
     winrt::event_token User::OnlineStateChanged(winrt::Windows::Foundation::EventHandler<winrt::Windows::Xbox::System::OnlineStateChangedEventArgs> const& handler)
